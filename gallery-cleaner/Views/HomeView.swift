@@ -52,13 +52,27 @@ struct HomeView: View {
                     }
                 }
             }
-            .navigationTitle("Місяці")
+            
             .navigationDestination(for: String.self) { month in
                 MonthGalleryView(month: month, photos: viewModel.groupedPhotos[month] ?? [])
             }
         }
         .onAppear {
             path = []
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack(spacing: 0) {
+                    Text("Gallery")
+                        .foregroundColor(.blue)
+                        .font(.title)
+                        .fontWeight(.bold)
+                    Text("Cleaner")
+                        .foregroundColor(.orange)
+                        .font(.title)
+                        .fontWeight(.bold)
+                }
+            }
         }
     }
 
