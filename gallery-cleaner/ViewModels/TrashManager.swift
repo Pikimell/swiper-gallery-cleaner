@@ -19,6 +19,22 @@ class TrashManager: ObservableObject {
     }
 
     // Остаточне видалення фото з Photo Library
+    // func deleteAllFromLibrary() {
+    //     let assetsToDelete = trashedPhotos.map { $0.asset }
+
+    //     PHPhotoLibrary.shared().performChanges({
+    //         PHAssetChangeRequest.deleteAssets(assetsToDelete as NSArray)
+    //     }) { success, error in
+    //         DispatchQueue.main.async {
+    //             if success {
+    //                 self.trashedPhotos.removeAll()
+    //             } else {
+    //                 print("❌ Не вдалося видалити фото: \(error?.localizedDescription ?? "Невідомо")")
+    //             }
+    //         }
+    //     }
+    // }
+
     func deleteAllFromLibrary() {
         let assetsToDelete = trashedPhotos.map { $0.asset }
 
@@ -27,9 +43,10 @@ class TrashManager: ObservableObject {
         }) { success, error in
             DispatchQueue.main.async {
                 if success {
+                    print("✅ Фото успішно видалені")
                     self.trashedPhotos.removeAll()
                 } else {
-                    print("❌ Не вдалося видалити фото: \(error?.localizedDescription ?? "Невідомо")")
+                    print("❌ Помилка при видаленні: \(error?.localizedDescription ?? "Невідомо")")
                 }
             }
         }

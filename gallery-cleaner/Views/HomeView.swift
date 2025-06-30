@@ -1,11 +1,11 @@
-
 import SwiftUI
 
 struct HomeView: View {
     @StateObject private var viewModel = PhotoLibraryViewModel()
+    @State private var path: [String] = [] // шлях навігації
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $path) {
             Group {
                 if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
                     Text("Доступ до фото заборонено. Надати дозвіл у налаштуваннях.")
@@ -15,7 +15,7 @@ struct HomeView: View {
                 } else {
                     List {
                         ForEach(viewModel.groupedPhotos.keys.sorted(by: >), id: \.self) { month in
-                            NavigationLink(destination: MonthGalleryView(month: month, photos: viewModel.groupedPhotos[month] ?? [])) {
+                            NavigationLink(value: month) {
                                 HStack {
                                     Text(month)
                                     Spacer()
@@ -28,6 +28,12 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("Місяці")
+            .navigationDestination(for: String.self) { month in
+                MonthGalleryView(month: month, photos: viewModel.groupedPhotos[month] ?? [])
+            }
+        }
+        .onAppear {
+            path = []
         }
     }
 }
