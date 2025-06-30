@@ -62,11 +62,14 @@ class PhotoLibraryViewModel: ObservableObject {
         }
     }
 
-    // Формат: "Липень 2024"
     static func monthYearString(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale.current
-        formatter.dateFormat = "LLLL yyyy"
-        return formatter.string(from: date).capitalized
-    }
+    let formatter = DateFormatter()
+    
+    // Витягуємо вибрану мову з AppStorage
+    let selectedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage") ?? Locale.current.languageCode ?? "en"
+    formatter.locale = Locale(identifier: selectedLanguage)
+
+    formatter.dateFormat = "LLLL yyyy"
+    return formatter.string(from: date).capitalized
+}
 }

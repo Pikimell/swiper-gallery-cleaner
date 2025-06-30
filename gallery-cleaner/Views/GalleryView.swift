@@ -6,6 +6,7 @@ struct GalleryView: View {
     @EnvironmentObject var trashManager: TrashManager
     @State private var showTrash = false
     @Environment(\.theme) private var theme
+    @ObservedObject var localization = LocalizationManager.shared
 
     let columns = [
         GridItem(.flexible()),

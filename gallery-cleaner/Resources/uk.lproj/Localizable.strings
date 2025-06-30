@@ -4,6 +4,7 @@
 "trash_title" = "Смітник";
 "all_photos" = "Усі фото";
 "pick_all" = "Вибрати всі фото";
+"photo_count" = "%d фото";
 "go_to_trash" = "Перейти до смітника (%d)";
 "trash_is_empty" = "Кошик порожній";
 "empty_month_list" = "Немає фото за %@";

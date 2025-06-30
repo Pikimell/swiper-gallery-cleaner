@@ -13,6 +13,7 @@ struct MonthGalleryView: View {
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @State private var showTrash = false
     @Environment(\.theme) private var theme
+    @ObservedObject var localization = LocalizationManager.shared
 
     var filteredPhotos: [PhotoItem] {
         if month == "All" {

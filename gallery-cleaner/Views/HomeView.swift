@@ -6,6 +6,7 @@ struct HomeView: View {
     @State private var path: [String] = [] // шлях навігації
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.theme) private var theme
+    @ObservedObject var localization = LocalizationManager.shared
 
     var body: some View {
         VStack(spacing: 8) {
@@ -76,7 +77,7 @@ struct HomeView: View {
                                                         .foregroundColor(theme.textPrimary)
                                                         .padding()
                                                     Spacer()
-                                                    Text("\(count) фото".localized)
+                                                    Text("photo_count".localized(with: count))
                                                         .foregroundColor(theme.textSecondary)
                                                         .padding(.trailing)
                                                 }

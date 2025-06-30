@@ -4,6 +4,7 @@
 "trash_title" = "Trash";
 "all_photos" = "All photos";
 "pick_all" = "Pick All Photos";
+"photo_count" = "%d photos";
 "go_to_trash" = "Go to trash (%d)";
 "trash_is_empty" = "Trash is empty";
 "empty_month_list" = "No photos for %@";

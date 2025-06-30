@@ -11,6 +11,7 @@ struct MainTabView: View {
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @EnvironmentObject var trashManager: TrashManager
     @Environment(\.theme) private var theme
+    @ObservedObject var localization = LocalizationManager.shared
 
     var body: some View {
         TabView {

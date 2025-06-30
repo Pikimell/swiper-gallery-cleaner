@@ -17,6 +17,7 @@ enum AppThemeMode: String, CaseIterable, Identifiable {
 struct SettingsView: View {
     @AppStorage("selectedTheme") private var selectedTheme: AppThemeMode = .system
     @AppStorage("selectedLanguage") private var selectedLanguage: String = Locale.current.identifier
+    @ObservedObject var localization = LocalizationManager.shared
 
     var body: some View {
         NavigationView {

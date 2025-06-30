@@ -3,6 +3,7 @@ import SwiftUI
 struct TrashView: View {
     @EnvironmentObject var trashManager: TrashManager
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
+    @ObservedObject var localization = LocalizationManager.shared
 
     let columns = [
         GridItem(.flexible()),
