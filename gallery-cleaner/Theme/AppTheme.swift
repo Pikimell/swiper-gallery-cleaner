@@ -54,11 +54,21 @@ extension EnvironmentValues {
 // MARK: - ViewModifier
 
 struct ThemeProvider: ViewModifier {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var systemScheme
+    @AppStorage("selectedTheme") private var selectedTheme: String = "system"
 
     func body(content: Content) -> some View {
-        let theme = colorScheme == .dark ? AppTheme.dark : AppTheme.light
-        return content.environment(\.theme, theme)
+        let resolvedScheme: ColorScheme
+        switch selectedTheme {
+        case "light": resolvedScheme = .light
+        case "dark": resolvedScheme = .dark
+        default: resolvedScheme = systemScheme
+        }
+
+        let theme = resolvedScheme == .dark ? AppTheme.dark : AppTheme.light
+        return content
+            .environment(\.theme, theme)
+            .preferredColorScheme(resolvedScheme)
     }
 }
 
