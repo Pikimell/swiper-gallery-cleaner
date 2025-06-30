@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct gallery_cleanerApp: App {
     @StateObject private var trashManager = TrashManager()
+    @StateObject private var viewModel = PhotoLibraryViewModel()
 
     var body: some Scene {
         WindowGroup {
@@ -30,6 +31,7 @@ struct gallery_cleanerApp: App {
                     }
             }
             .environmentObject(trashManager)
+            .environmentObject(viewModel)
         }
     }
 }

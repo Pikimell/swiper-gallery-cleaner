@@ -9,6 +9,7 @@ struct MonthGalleryView: View {
     @State private var offset: CGSize = .zero
     @State private var swipeDirection: Int = 0
     @EnvironmentObject var trashManager: TrashManager
+    @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @State private var showTrash = false
 
     var filteredPhotos: [PhotoItem] {
@@ -106,6 +107,7 @@ struct MonthGalleryView: View {
         .sheet(isPresented: $showTrash) {
             TrashView()
                 .environmentObject(trashManager)
+                .environmentObject(viewModel) 
         }
     }
 

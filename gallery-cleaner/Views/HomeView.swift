@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @StateObject private var viewModel = PhotoLibraryViewModel()
     @State private var path: [String] = [] // шлях навігації
+    @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -89,6 +90,12 @@ struct HomeView: View {
         }
         .onAppear {
             path = []
+            viewModel.fetchPhotos()
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                viewModel.fetchPhotos()
+            }
         }
         .toolbar {
             ToolbarItem(placement: .principal) {

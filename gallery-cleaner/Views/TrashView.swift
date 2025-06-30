@@ -1,8 +1,8 @@
-
 import SwiftUI
 
 struct TrashView: View {
     @EnvironmentObject var trashManager: TrashManager
+    @EnvironmentObject var viewModel: PhotoLibraryViewModel
 
     let columns = [
         GridItem(.flexible()),
@@ -31,7 +31,7 @@ struct TrashView: View {
                     }
 
                     Button(role: .destructive) {
-                        trashManager.deleteAllFromLibrary()
+                        trashManager.deleteAllFromLibrary(viewModel: viewModel)
                     } label: {
                         Text("Видалити все")
                             .font(.headline)

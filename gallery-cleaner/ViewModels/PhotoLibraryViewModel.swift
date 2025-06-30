@@ -53,7 +53,11 @@ class PhotoLibraryViewModel: ObservableObject {
         }
 
         DispatchQueue.main.async {
-            self.groupedPhotos = grouped
+            // Очищення перед оновленням
+            self.groupedPhotos.removeAll()
+            // Сортування груп за ключем (місяць-рік)
+            let sortedGrouped = grouped.sorted { $0.key < $1.key }
+            self.groupedPhotos = Dictionary(uniqueKeysWithValues: sortedGrouped)
             self.isLoading = false
         }
     }
