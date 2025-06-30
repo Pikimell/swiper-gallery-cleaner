@@ -48,15 +48,15 @@ struct MonthGalleryView: View {
                                 }
                             }
 
-                            if isSwipingUp, let current = filteredPhotos[safe: currentIndex] {
-                                ZStack {
-                                    Image(systemName: "trash.circle.fill")
-                                        .resizable()
-                                        .frame(width: 80, height: 80)
-                                        .foregroundColor(theme.trash)
-                                        .opacity(0.8)
-                                }
-                                .transition(.opacity)
+                            if isSwipingUp {
+                                Image(systemName: "trash.circle.fill")
+                                    .resizable()
+                                    .frame(width: 80, height: 80)
+                                    .foregroundColor(theme.trash)
+                                    .opacity(0.8)
+                                    .offset(x: offset.width, y: offset.height)
+                                    .zIndex(1)
+                                    .transition(.opacity)
                             }
                         }
                         .gesture(
