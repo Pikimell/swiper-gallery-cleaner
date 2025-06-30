@@ -39,9 +39,9 @@ struct MonthGalleryView: View {
                                 if let photo = filteredPhotos[safe: index] {
                                     PhotoView(photoItem: photo)
                                         .id(photo.id)
-                                        .opacity(index == currentIndex ? (isSwipingUp ? 0.4 : 1.0) : 0)
+                                        .opacity(index == currentIndex && isSwipingUp ? 0.4 : 1.0)
                                         .blur(radius: isSwipingUp && index == currentIndex ? 8 : 0)
-                                        .rotationEffect(index == currentIndex + swipeDirection ? .degrees((offset.width / CGFloat(10)).clamped(to: -10...10)) : .zero)
+                                        .rotationEffect(index == currentIndex ? .degrees((offset.width / CGFloat(10)).clamped(to: -10...10)) : .zero)
                                         .scaleEffect(index == currentIndex ? 1.0 : 0.9)
                                         .offset(x: offset.width + CGFloat(index - currentIndex) * UIScreen.main.bounds.width,
                                                 y: index == currentIndex ? offset.height : 0)
@@ -66,8 +66,36 @@ struct MonthGalleryView: View {
                                     swipeDirection = gesture.translation.width > 0 ? -1 : 1
                                 }
                                 .onEnded { gesture in
-                                    handleSwipe(gesture: gesture)
-                                    offset = .zero
+                                    let horizontal = gesture.translation.width
+                                    let predicted = gesture.predictedEndTranslation.width
+                                    let vertical = gesture.translation.height
+
+                                    if abs(horizontal) > abs(vertical) {
+                                        if predicted < -50 && currentIndex < filteredPhotos.count - 1 {
+                                            withAnimation(.interpolatingSpring(stiffness: 200, damping: 30)) {
+                                                offset.width = -UIScreen.main.bounds.width
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                                currentIndex += 1
+                                                offset = .zero
+                                            }
+                                        } else if predicted > 50 && currentIndex > 0 {
+                                            withAnimation(.interpolatingSpring(stiffness: 200, damping: 30)) {
+                                                offset.width = UIScreen.main.bounds.width
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                                currentIndex -= 1
+                                                offset = .zero
+                                            }
+                                        } else {
+                                            withAnimation {
+                                                offset = .zero
+                                            }
+                                        }
+                                    } else {
+                                        handleSwipe(gesture: gesture)
+                                        offset = .zero
+                                    }
                                 }
                         )
                     }
