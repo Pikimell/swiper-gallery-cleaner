@@ -13,14 +13,39 @@ struct HomeView: View {
                 } else if viewModel.isLoading {
                     ProgressView("Завантаження фото...")
                 } else {
-                    List {
-                        ForEach(viewModel.groupedPhotos.keys.sorted(by: >), id: \.self) { month in
-                            NavigationLink(value: month) {
-                                HStack {
-                                    Text(month)
-                                    Spacer()
-                                    Text("\(viewModel.groupedPhotos[month]?.count ?? 0) фото")
-                                        .foregroundColor(.secondary)
+                    ScrollView {
+                        LazyVStack(spacing: 8) {
+                            ForEach(groupPhotosByYear(), id: \.key) { year, months in
+                                Text("\(year)")
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal)
+
+                                ForEach(months, id: \.self) { month in
+                                    if let count = viewModel.groupedPhotos[month]?.count {
+                                        NavigationLink(value: month) {
+                                            HStack {
+                                                Text(month)
+                                                    .foregroundColor(.white)
+                                                    .padding()
+                                                Spacer()
+                                                Text("\(count) фото")
+                                                    .foregroundColor(.white.opacity(0.7))
+                                            }
+                                            .frame(maxWidth: .infinity)
+                                            .background(
+                                                LinearGradient(
+                                                    gradient: Gradient(colors: [Color.orange.opacity(0.9), Color.orange.opacity(0.6)]),
+                                                    startPoint: .leading,
+                                                    endPoint: .trailing
+                                                )
+                                            )
+                                            .cornerRadius(12)
+                                            .padding(.horizontal)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -35,5 +60,17 @@ struct HomeView: View {
         .onAppear {
             path = []
         }
+    }
+
+    private func groupPhotosByYear() -> [(key: String, value: [String])] {
+        let keys = viewModel.groupedPhotos.keys
+        let monthYearPairs = keys.compactMap { key -> (String, String)? in
+            let parts = key.split(separator: " ")
+            guard parts.count == 2 else { return nil }
+            return (key, String(parts[1]))
+        }
+
+        let grouped = Dictionary(grouping: monthYearPairs, by: { $0.1 })
+        return grouped.mapValues { $0.map { $0.0 }.sorted(by: >) }.sorted { $0.key > $1.key }
     }
 }
