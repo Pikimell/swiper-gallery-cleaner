@@ -12,7 +12,12 @@ struct MonthGalleryView: View {
     @State private var showTrash = false
 
     var filteredPhotos: [PhotoItem] {
-        photos.filter { !trashManager.trashedPhotos.contains($0) }
+        if month == "All" {
+            return photos.sorted { ($0.creationDate ?? .distantPast) > ($1.creationDate ?? .distantPast) }
+        }
+        return photos
+            .filter { !trashManager.trashedPhotos.contains($0) }
+            .sorted { ($0.creationDate ?? .distantPast) > ($1.creationDate ?? .distantPast) }
     }
 
     var body: some View {

@@ -15,6 +15,28 @@ struct HomeView: View {
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 8) {
+                            Button(action: {
+                                path.append("All")
+                            }) {
+                                HStack {
+                                    Text("Pick All Photos")
+                                        .foregroundColor(.white)
+                                        .padding()
+                                    Spacer()
+                                }
+                                .padding(.leading)
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [Color.orange.opacity(0.9), Color.orange.opacity(0.6)]),
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .cornerRadius(12)
+                                .padding(.horizontal)
+                                .padding(.vertical, 4)
+                            }
                             ForEach(groupPhotosByYear(), id: \.key) { year, months in
                                 Text("\(year)")
                                     .font(.title3)
@@ -57,7 +79,12 @@ struct HomeView: View {
             }
             
             .navigationDestination(for: String.self) { month in
-                MonthGalleryView(month: month, photos: viewModel.groupedPhotos[month] ?? [])
+                MonthGalleryView(
+                    month: month,
+                    photos: month == "All"
+                        ? viewModel.groupedPhotos.values.flatMap { $0 }
+                        : viewModel.groupedPhotos[month] ?? []
+                )
             }
         }
         .onAppear {
