@@ -21,7 +21,9 @@ struct TrashView: View {
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 10) {
                             ForEach(trashManager.trashedPhotos, id: \.id) { photo in
-                                PhotoThumbnailView(photo: photo)
+                                PhotoThumbnailView(photo: photo, 
+                                    width: UIScreen.main.bounds.width / 3 - 16,
+                                    height: UIScreen.main.bounds.width / 3 - 16)
                                     .onTapGesture {
                                         trashManager.restorePhoto(photo)
                                     }

@@ -3,6 +3,8 @@ import SwiftUI
 
 struct PhotoThumbnailView: View {
     let photo: PhotoItem
+    var width: CGFloat = 100
+    var height: CGFloat = 100
 
     @State private var image: UIImage?
 
@@ -12,17 +14,15 @@ struct PhotoThumbnailView: View {
                 Image(uiImage: img)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 100, height: 100)
+                    .frame(width: width, height: height)
                     .clipped()
                     .cornerRadius(8)
             } else {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
-                    .frame(width: 100, height: 100)
+                    .frame(width: width, height: height)
                     .cornerRadius(8)
-                    .overlay(
-                        ProgressView()
-                    )
+                    .overlay(ProgressView())
             }
         }
         .onAppear {
