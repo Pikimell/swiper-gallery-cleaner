@@ -6,70 +6,84 @@ struct HomeView: View {
     @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
-        NavigationStack(path: $path) {
-            Group {
-                if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
-                    Text("Доступ до фото заборонено. Надати дозвіл у налаштуваннях.")
-                        .padding()
-                } else if viewModel.isLoading {
-                    ProgressView("Завантаження фото...")
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 8) {
-                            Button(action: {
-                                path.append("All")
-                            }) {
-                                HStack {
-                                    Text("Pick All Photos")
-                                        .foregroundColor(.white)
-                                        .padding()
-                                    Spacer()
-                                }
-                                .padding(.leading)
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [Color.orange.opacity(0.9), Color.orange.opacity(0.6)]),
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    )
-                                )
-                                .cornerRadius(12)
-                                .padding(.horizontal)
-                                .padding(.vertical, 4)
-                            }
-                            ForEach(groupPhotosByYear(), id: \.key) { year, months in
-                                Text("\(year)")
-                                    .font(.title3)
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.secondary)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.horizontal)
+        VStack(spacing: 8) {
+            HStack(spacing: 0) {
+                Text("Gallery")
+                    .foregroundColor(.blue)
+                    .font(.title)
+                    .fontWeight(.bold)
+                Text("Cleaner")
+                    .foregroundColor(.orange)
+                    .font(.title)
+                    .fontWeight(.bold)
+            }
+            .padding(.top, 8)
 
-                                ForEach(months, id: \.self) { month in
-                                    if let count = viewModel.groupedPhotos[month]?.count {
-                                        NavigationLink(value: month) {
-                                            HStack {
-                                                Text(month)
-                                                    .foregroundColor(.white)
-                                                    .padding()
-                                                Spacer()
-                                                Text("\(count) фото")
-                                                    .foregroundColor(.white.opacity(0.7))
-                                                    .padding(.trailing)
-                                            }
-                                            .padding(.leading)
-                                            .frame(maxWidth: .infinity)
-                                            .background(
-                                                LinearGradient(
-                                                    gradient: Gradient(colors: [Color.orange.opacity(0.9), Color.orange.opacity(0.6)]),
-                                                    startPoint: .leading,
-                                                    endPoint: .trailing
+            NavigationStack(path: $path) {
+                Group {
+                    if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
+                        Text("Доступ до фото заборонено. Надати дозвіл у налаштуваннях.")
+                            .padding()
+                    } else if viewModel.isLoading {
+                        ProgressView("Завантаження фото...")
+                    } else {
+                        ScrollView {
+                            LazyVStack(spacing: 8) {
+                                Button(action: {
+                                    path.append("All")
+                                }) {
+                                    HStack {
+                                        Text("Pick All Photos")
+                                            .foregroundColor(.white)
+                                            .padding()
+                                        Spacer()
+                                    }
+                                    .padding(.leading)
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [Color.orange.opacity(0.9), Color.orange.opacity(0.6)]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .cornerRadius(12)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 4)
+                                }
+                                ForEach(groupPhotosByYear(), id: \.key) { year, months in
+                                    Text("\(year)")
+                                        .font(.title3)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.secondary)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.horizontal)
+
+                                    ForEach(months, id: \.self) { month in
+                                        if let count = viewModel.groupedPhotos[month]?.count {
+                                            NavigationLink(value: month) {
+                                                HStack {
+                                                    Text(month)
+                                                        .foregroundColor(.white)
+                                                        .padding()
+                                                    Spacer()
+                                                    Text("\(count) фото")
+                                                        .foregroundColor(.white.opacity(0.7))
+                                                        .padding(.trailing)
+                                                }
+                                                .padding(.leading)
+                                                .frame(maxWidth: .infinity)
+                                                .background(
+                                                    LinearGradient(
+                                                        gradient: Gradient(colors: [Color.orange.opacity(0.9), Color.orange.opacity(0.6)]),
+                                                        startPoint: .leading,
+                                                        endPoint: .trailing
+                                                    )
                                                 )
-                                            )
-                                            .cornerRadius(12)
-                                            .padding(.horizontal)
-                                            .padding(.vertical, 4)
+                                                .cornerRadius(12)
+                                                .padding(.horizontal)
+                                                .padding(.vertical, 4)
+                                            }
                                         }
                                     }
                                 }
@@ -77,15 +91,14 @@ struct HomeView: View {
                         }
                     }
                 }
-            }
-            
-            .navigationDestination(for: String.self) { month in
-                MonthGalleryView(
-                    month: month,
-                    photos: month == "All"
-                        ? viewModel.groupedPhotos.values.flatMap { $0 }
-                        : viewModel.groupedPhotos[month] ?? []
-                )
+                .navigationDestination(for: String.self) { month in
+                    MonthGalleryView(
+                        month: month,
+                        photos: month == "All"
+                            ? viewModel.groupedPhotos.values.flatMap { $0 }
+                            : viewModel.groupedPhotos[month] ?? []
+                    )
+                }
             }
         }
         .onAppear {
@@ -95,20 +108,6 @@ struct HomeView: View {
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 viewModel.fetchPhotos()
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                HStack(spacing: 0) {
-                    Text("Gallery")
-                        .foregroundColor(.blue)
-                        .font(.title)
-                        .fontWeight(.bold)
-                    Text("Cleaner")
-                        .foregroundColor(.orange)
-                        .font(.title)
-                        .fontWeight(.bold)
-                }
             }
         }
     }

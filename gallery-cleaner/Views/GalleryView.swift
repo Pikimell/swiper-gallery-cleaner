@@ -18,21 +18,37 @@ struct GalleryView: View {
 
     var body: some View {
         NavigationView {
-            Group {
-                if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
-                    Text("Доступ до фото заборонено.\nНадайте дозвіл у налаштуваннях.")
-                        .multilineTextAlignment(.center)
-                        .padding()
-                } else if viewModel.isLoading {
-                    ProgressView("Завантаження фото…")
-                } else {
-                    ScrollView {
-                        photoGrid
+            VStack {
+                Group {
+                    if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
+                        Text("Доступ до фото заборонено.\nНадайте дозвіл у налаштуваннях.")
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    } else if viewModel.isLoading {
+                        ProgressView("Завантаження фото…")
+                    } else {
+                        ScrollView {
+                            photoGrid
+                        }
+                    }
+                }
+                trashButton
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack(spacing: 0) {
+                        Text("Gallery")
+                            .foregroundColor(.blue)
+                            .font(.title)
+                            .fontWeight(.bold)
+                        Text("Cleaner")
+                            .foregroundColor(.orange)
+                            .font(.title)
+                            .fontWeight(.bold)
                     }
                 }
             }
-            .navigationTitle("Уся галерея")
-            trashButton
         }
         .sheet(isPresented: $showTrash) {
             TrashView()
@@ -43,7 +59,7 @@ struct GalleryView: View {
 
     @ViewBuilder
     private var trashButton: some View {
-        if !trashManager.trashedPhotos.isEmpty {
+        if allPhotos.contains(where: { trashManager.trashedPhotos.contains($0) }) {
             Button(action: {
                 showTrash = true
             }) {
