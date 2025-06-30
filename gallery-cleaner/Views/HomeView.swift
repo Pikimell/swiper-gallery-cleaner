@@ -33,7 +33,9 @@ struct HomeView: View {
                                                 Spacer()
                                                 Text("\(count) фото")
                                                     .foregroundColor(.white.opacity(0.7))
+                                                    .padding(.trailing)
                                             }
+                                            .padding(.leading)
                                             .frame(maxWidth: .infinity)
                                             .background(
                                                 LinearGradient(
@@ -44,6 +46,7 @@ struct HomeView: View {
                                             )
                                             .cornerRadius(12)
                                             .padding(.horizontal)
+                                            .padding(.vertical, 4)
                                         }
                                     }
                                 }
