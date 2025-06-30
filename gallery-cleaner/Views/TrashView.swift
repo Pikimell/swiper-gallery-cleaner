@@ -14,7 +14,7 @@ struct TrashView: View {
         NavigationView {
             VStack {
                 if trashManager.trashedPhotos.isEmpty {
-                    Text("Кошик порожній")
+                    Text("trash_is_empty".localized)
                         .foregroundColor(.secondary)
                         .padding()
                 } else {
@@ -35,7 +35,7 @@ struct TrashView: View {
                     Button(role: .destructive) {
                         trashManager.deleteAllFromLibrary(viewModel: viewModel)
                     } label: {
-                        Text("Видалити все")
+                        Text("trash_delete_all".localized)
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -47,7 +47,7 @@ struct TrashView: View {
                     }
                 }
             }
-            .navigationTitle("Кошик")
+            .navigationTitle("trash_title".localized)
         }
     }
 }

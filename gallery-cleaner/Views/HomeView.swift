@@ -10,11 +10,11 @@ struct HomeView: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 0) {
-                Text("Gallery")
+                Text("app_title_first".localized)
                     .foregroundColor(theme.accent)
                     .font(.title)
                     .fontWeight(.bold)
-                Text("Cleaner")
+                Text("app_title_second".localized)
                     .foregroundColor(theme.accent.opacity(0.6))
                     .font(.title)
                     .fontWeight(.bold)
@@ -24,24 +24,25 @@ struct HomeView: View {
             NavigationStack(path: $path) {
                 Group {
                     if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
-                        Text("Доступ до фото заборонено. Надати дозвіл у налаштуваннях.")
+                        Text("home_access_danied".localized)
                             .padding()
                     } else if viewModel.isLoading {
-                        ProgressView("Завантаження фото...")
+                        ProgressView("home_load_photos".localized)
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 8) {
-                                Text("All photos")
+                                Text("all_photos".localized)
                                     .font(.title3)
                                     .fontWeight(.semibold)
                                     .foregroundColor(theme.textSecondary)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .padding(.horizontal)
+                                    .padding(.top, 20)
                                 Button(action: {
                                     path.append("All")
                                 }) {
                                     HStack {
-                                        Text("Pick All Photos")
+                                        Text("pick_all".localized)
                                             .foregroundColor(theme.textPrimary)
                                             .padding()
                                         Spacer()
@@ -75,7 +76,7 @@ struct HomeView: View {
                                                         .foregroundColor(theme.textPrimary)
                                                         .padding()
                                                     Spacer()
-                                                    Text("\(count) фото")
+                                                    Text("\(count) фото".localized)
                                                         .foregroundColor(theme.textSecondary)
                                                         .padding(.trailing)
                                                 }

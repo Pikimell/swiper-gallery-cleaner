@@ -1,0 +1,30 @@
+"home_title" = "Головна";
+"gallery_title" = "Галерея";
+"settings_title" = "Налаштування";
+"trash_title" = "Смітник";
+"all_photos" = "Усі фото";
+"pick_all" = "Вибрати всі фото";
+"go_to_trash" = "Перейти до смітника (%d)";
+"trash_is_empty" = "Кошик порожній";
+"empty_month_list" = "Немає фото за %@";
+"home_access_danied" = "Доступ до фото заборонено. Надати дозвіл у налаштуваннях.";
+"home_load_photos" = "Завантаження фото...";
+"gallery_access_danied" = "Доступ до фото заборонено.\nНадайте дозвіл у налаштуваннях.";
+"trash_delete_all" = "Видалити все";
+
+
+"app_title_first" = "Gallery";
+"app_title_second" = "Cleaner";
+
+"settings_title" = "Налаштування";
+"settings_appearance" = "Зовнішній вигляд";
+"settings_theme" = "Тема";
+"theme_system" = "Системна";
+"theme_light" = "Світла";
+"theme_dark" = "Темна";
+
+"settings_language" = "Мова";
+
+"settings_policy" = "Правові документи";
+"settings_privacy_policy" = "Політика конфіденційності";
+"settings_terms_of_service" = "Умови користування";

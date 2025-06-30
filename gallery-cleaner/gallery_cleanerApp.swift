@@ -15,25 +15,10 @@ struct gallery_cleanerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TabView {
-                HomeView()
-                    .tabItem {
-                        Label("Home", systemImage: "house")
-                    }
-
-                GalleryView()
-                    .tabItem {
-                        Label("Gallery", systemImage: "photo.on.rectangle")
-                    }
-
-                TrashView()
-                    .tabItem {
-                        Label("Trash", systemImage: "trash")
-                    }
-            }
-            .environmentObject(trashManager)
-            .environmentObject(viewModel)
-            .applyTheme()
+            MainTabView()
+                   .environmentObject(viewModel)
+                   .environmentObject(trashManager)
+                   .applyTheme()
         }
     }
 }

@@ -1,0 +1,29 @@
+"home_title" = "Home";
+"gallery_title" = "Gallery";
+"settings_title" = "Settings";
+"trash_title" = "Trash";
+"all_photos" = "All photos";
+"pick_all" = "Pick All Photos";
+"go_to_trash" = "Go to trash (%d)";
+"trash_is_empty" = "Trash is empty";
+"empty_month_list" = "No photos for %@";
+"home_access_danied" = "Access to photos is denied. Please allow access in settings.";
+"home_load_photos" = "Loading photos...";
+"gallery_access_danied" = "Access to photos is denied.\nPlease allow access in settings.";
+"trash_delete_all" = "Видалити все";
+
+"app_title_first" = "Gallery";
+"app_title_second" = "Cleaner";
+
+"settings_title" = "Settings";
+"settings_appearance" = "Appearance";
+"settings_theme" = "Theme";
+"theme_system" = "System";
+"theme_light" = "Light";
+"theme_dark" = "Dark";
+
+"settings_language" = "Language";
+
+"settings_policy" = "Legal";
+"settings_privacy_policy" = "Privacy Policy";
+"settings_terms_of_service" = "Terms of Service";

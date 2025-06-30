@@ -23,11 +23,11 @@ struct GalleryView: View {
             VStack {
                 Group {
                     if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
-                        Text("Доступ до фото заборонено.\nНадайте дозвіл у налаштуваннях.")
+                        Text("gallery_access_danied".localized)
                             .multilineTextAlignment(.center)
                             .padding()
                     } else if viewModel.isLoading {
-                        ProgressView("Завантаження фото…")
+                        ProgressView("home_load_photos".localized)
                     } else {
                         ScrollView {
                             photoGrid
@@ -40,11 +40,11 @@ struct GalleryView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     HStack(spacing: 0) {
-                        Text("Gallery")
+                        Text("app_title_first".localized)
                             .foregroundColor(theme.accent)
                             .font(.title)
                             .fontWeight(.bold)
-                        Text("Cleaner")
+                        Text("app_title_second".localized)
                             .foregroundColor(theme.accent.opacity(0.6))
                             .font(.title)
                             .fontWeight(.bold)
@@ -65,7 +65,7 @@ struct GalleryView: View {
             Button(action: {
                 showTrash = true
             }) {
-                Text("Перейти до смітника (\(trashManager.trashedPhotos.count))")
+                Text("go_to_trash".localized(with:trashManager.trashedPhotos.count))
                     .font(.headline)
                     .foregroundColor(theme.textPrimary)
                     .padding()

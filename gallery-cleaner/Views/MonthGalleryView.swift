@@ -26,7 +26,7 @@ struct MonthGalleryView: View {
     var body: some View {
         VStack {
             if filteredPhotos.isEmpty {
-                Text("Немає фото за \(month)")
+                Text("empty_month_list".localized(with:month))
                     .foregroundColor(.secondary)
             } else {
                 ZStack {
@@ -73,25 +73,13 @@ struct MonthGalleryView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                     VStack {
-                        HStack {
-                            Spacer()
-                            VStack(alignment: .center) {
-                                Image(systemName: "arrow.up")
-                                    .font(.system(size: 24, weight: .semibold))
-                                    .foregroundColor(theme.textPrimary)
-                                Text("Свайп вгору — видалити")
-                                    .font(.caption)
-                                    .foregroundColor(theme.textSecondary)
-                            }
-                            .padding(.top, 20)
-                            .padding(.trailing, 16)
-                        }
+                        
                         Spacer()
                         if !trashManager.trashedPhotos.isEmpty {
                             Button(action: {
                                 showTrash = true
                             }) {
-                                Text("Перейти до смітника (\(trashManager.trashedPhotos.count))")
+                                Text("go_to_trash".localized(with:trashManager.trashedPhotos.count))
                                     .font(.headline)
                                     .padding()
                                     .frame(maxWidth: .infinity)
