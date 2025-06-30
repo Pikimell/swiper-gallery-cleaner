@@ -9,9 +9,27 @@ import SwiftUI
 
 @main
 struct gallery_cleanerApp: App {
+    @StateObject private var trashManager = TrashManager()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                HomeView()
+                    .tabItem {
+                        Label("Home", systemImage: "house")
+                    }
+
+                GalleryView()
+                    .tabItem {
+                        Label("Gallery", systemImage: "photo.on.rectangle")
+                    }
+
+                TrashView()
+                    .tabItem {
+                        Label("Trash", systemImage: "trash")
+                    }
+            }
+            .environmentObject(trashManager)
         }
     }
 }
