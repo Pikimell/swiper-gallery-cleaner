@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @main
 struct gallery_cleanerApp: App {
     @StateObject private var trashManager = TrashManager()
@@ -32,6 +33,7 @@ struct gallery_cleanerApp: App {
             }
             .environmentObject(trashManager)
             .environmentObject(viewModel)
+            .applyTheme()
         }
     }
 }

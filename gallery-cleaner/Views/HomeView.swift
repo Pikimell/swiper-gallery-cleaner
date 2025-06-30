@@ -1,19 +1,21 @@
 import SwiftUI
 
+
 struct HomeView: View {
     @StateObject private var viewModel = PhotoLibraryViewModel()
     @State private var path: [String] = [] // шлях навігації
     @Environment(\.scenePhase) var scenePhase
+    @Environment(\.theme) private var theme
 
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 0) {
                 Text("Gallery")
-                    .foregroundColor(.blue)
+                    .foregroundColor(theme.accent)
                     .font(.title)
                     .fontWeight(.bold)
                 Text("Cleaner")
-                    .foregroundColor(.orange)
+                    .foregroundColor(theme.accent.opacity(0.6))
                     .font(.title)
                     .fontWeight(.bold)
             }
@@ -29,12 +31,18 @@ struct HomeView: View {
                     } else {
                         ScrollView {
                             LazyVStack(spacing: 8) {
+                                Text("All photos")
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(theme.textSecondary)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal)
                                 Button(action: {
                                     path.append("All")
                                 }) {
                                     HStack {
                                         Text("Pick All Photos")
-                                            .foregroundColor(.white)
+                                            .foregroundColor(theme.textPrimary)
                                             .padding()
                                         Spacer()
                                     }
@@ -42,7 +50,7 @@ struct HomeView: View {
                                     .frame(maxWidth: .infinity)
                                     .background(
                                         LinearGradient(
-                                            gradient: Gradient(colors: [Color.orange.opacity(0.9), Color.orange.opacity(0.6)]),
+                                            gradient: Gradient(colors: [theme.accent, theme.accent.opacity(0.6)]),
                                             startPoint: .leading,
                                             endPoint: .trailing
                                         )
@@ -55,7 +63,7 @@ struct HomeView: View {
                                     Text("\(year)")
                                         .font(.title3)
                                         .fontWeight(.semibold)
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(theme.textSecondary)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.horizontal)
 
@@ -64,18 +72,18 @@ struct HomeView: View {
                                             NavigationLink(value: month) {
                                                 HStack {
                                                     Text(month)
-                                                        .foregroundColor(.white)
+                                                        .foregroundColor(theme.textPrimary)
                                                         .padding()
                                                     Spacer()
                                                     Text("\(count) фото")
-                                                        .foregroundColor(.white.opacity(0.7))
+                                                        .foregroundColor(theme.textSecondary)
                                                         .padding(.trailing)
                                                 }
                                                 .padding(.leading)
                                                 .frame(maxWidth: .infinity)
                                                 .background(
                                                     LinearGradient(
-                                                        gradient: Gradient(colors: [Color.orange.opacity(0.9), Color.orange.opacity(0.6)]),
+                                                        gradient: Gradient(colors: [theme.accent, theme.accent.opacity(0.6)]),
                                                         startPoint: .leading,
                                                         endPoint: .trailing
                                                     )
@@ -101,6 +109,7 @@ struct HomeView: View {
                 }
             }
         }
+        .background(theme.background)
         .onAppear {
             path = []
             viewModel.fetchPhotos()

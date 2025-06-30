@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct PhotoThumbnailView: View {
@@ -7,6 +6,7 @@ struct PhotoThumbnailView: View {
     var height: CGFloat = 100
 
     @State private var image: UIImage?
+    @Environment(\.theme) private var theme
 
     var body: some View {
         ZStack {
@@ -19,7 +19,7 @@ struct PhotoThumbnailView: View {
                     .cornerRadius(8)
             } else {
                 Rectangle()
-                    .fill(Color.gray.opacity(0.3))
+                    .fill(theme.border.opacity(0.3))
                     .frame(width: width, height: height)
                     .cornerRadius(8)
                     .overlay(ProgressView())

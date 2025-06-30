@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 
+
 struct MonthGalleryView: View {
     let month: String
     let photos: [PhotoItem]
@@ -11,6 +12,7 @@ struct MonthGalleryView: View {
     @EnvironmentObject var trashManager: TrashManager
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @State private var showTrash = false
+    @Environment(\.theme) private var theme
 
     var filteredPhotos: [PhotoItem] {
         if month == "All" {
@@ -28,7 +30,7 @@ struct MonthGalleryView: View {
                     .foregroundColor(.secondary)
             } else {
                 ZStack {
-                    Color.black.ignoresSafeArea()
+                    theme.background.ignoresSafeArea()
 
                     ZStack {
                         ZStack {
@@ -50,7 +52,7 @@ struct MonthGalleryView: View {
                                     Image(systemName: "trash.circle.fill")
                                         .resizable()
                                         .frame(width: 80, height: 80)
-                                        .foregroundColor(.red)
+                                        .foregroundColor(theme.trash)
                                         .opacity(0.8)
                                 }
                                 .transition(.opacity)
@@ -76,10 +78,10 @@ struct MonthGalleryView: View {
                             VStack(alignment: .center) {
                                 Image(systemName: "arrow.up")
                                     .font(.system(size: 24, weight: .semibold))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(theme.textPrimary)
                                 Text("Свайп вгору — видалити")
                                     .font(.caption)
-                                    .foregroundColor(.white.opacity(0.8))
+                                    .foregroundColor(theme.textSecondary)
                             }
                             .padding(.top, 20)
                             .padding(.trailing, 16)
@@ -93,7 +95,7 @@ struct MonthGalleryView: View {
                                     .font(.headline)
                                     .padding()
                                     .frame(maxWidth: .infinity)
-                                    .background(Color.white.opacity(0.8))
+                                    .background(theme.card.opacity(0.9))
                                     .cornerRadius(12)
                             }
                             .padding(.horizontal, 16)

@@ -1,9 +1,11 @@
 import SwiftUI
 
+
 struct GalleryView: View {
     @StateObject private var viewModel = PhotoLibraryViewModel()
     @EnvironmentObject var trashManager: TrashManager
     @State private var showTrash = false
+    @Environment(\.theme) private var theme
 
     let columns = [
         GridItem(.flexible()),
@@ -39,11 +41,11 @@ struct GalleryView: View {
                 ToolbarItem(placement: .principal) {
                     HStack(spacing: 0) {
                         Text("Gallery")
-                            .foregroundColor(.blue)
+                            .foregroundColor(theme.accent)
                             .font(.title)
                             .fontWeight(.bold)
                         Text("Cleaner")
-                            .foregroundColor(.orange)
+                            .foregroundColor(theme.accent.opacity(0.6))
                             .font(.title)
                             .fontWeight(.bold)
                     }
@@ -65,9 +67,10 @@ struct GalleryView: View {
             }) {
                 Text("Перейти до смітника (\(trashManager.trashedPhotos.count))")
                     .font(.headline)
+                    .foregroundColor(theme.textPrimary)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color.white.opacity(0.8))
+                    .background(theme.card.opacity(0.9))
                     .cornerRadius(12)
                     .padding()
             }
@@ -108,7 +111,7 @@ struct GalleryView: View {
                         Image(systemName: "trash.circle.fill")
                             .resizable()
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.red)
+                            .foregroundColor(theme.trash)
                     }
                     Spacer()
                 }

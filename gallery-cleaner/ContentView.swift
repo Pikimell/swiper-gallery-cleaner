@@ -7,7 +7,10 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
+    @Environment(\.theme) private var theme
+
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -16,6 +19,7 @@ struct ContentView: View {
             Text("Hello, world!")
         }
         .padding()
+        .background(theme.background)
     }
 }
 

@@ -1,9 +1,11 @@
+
 import SwiftUI
 
 struct PhotoView: View {
     let photoItem: PhotoItem
 
     @State private var image: UIImage?
+    @Environment(\.theme) private var theme
 
     var body: some View {
         ZStack {
@@ -12,11 +14,11 @@ struct PhotoView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.black)
+                    .background(theme.background)
             } else {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.black)
+                    .background(theme.background)
             }
         }
         .onAppear {
