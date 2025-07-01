@@ -48,18 +48,22 @@ class PhotoLibraryViewModel: ObservableObject {
             let item = PhotoItem(asset: asset)
             guard let date = item.creationDate else { return }
 
-            let monthYear = Self.monthYearString(from: date)
-            grouped[monthYear, default: []].append(item)
+            let monthYear = Self.monthYearString(from: date) // Наприклад "Січень 2025"
+            let parts = monthYear.split(separator: " ")
+            guard parts.count == 2 else { return }
+
+            let monthName = String(parts[0])
+            guard let monthNumber = Self.monthNumber(from: monthName) else { return }
+
+            let displayKey = "\(monthNumber) \(monthYear)"  // "01 Січень 2025"
+            grouped[displayKey, default: []].append(item)
         }
 
         DispatchQueue.main.async {
-            // Очищення перед оновленням
-            self.groupedPhotos.removeAll()
-            // Сортування груп за ключем (місяць-рік)
-            let sortedGrouped = grouped.sorted { 
-                guard let date1 = $0.value.first?.creationDate,
-                let date2 = $1.value.first?.creationDate else { return false }
-                return date1 > date2 
+            let sortedGrouped = grouped.sorted { lhs, rhs in
+                let lhsKey = lhs.key.prefix(2)  // перші 2 символи — номер місяця
+                let rhsKey = rhs.key.prefix(2)
+                return lhsKey < rhsKey
             }
             self.groupedPhotos = Dictionary(uniqueKeysWithValues: sortedGrouped)
             self.isLoading = false
@@ -75,5 +79,23 @@ class PhotoLibraryViewModel: ObservableObject {
 
     formatter.dateFormat = "LLLL yyyy"
     return formatter.string(from: date).capitalized
-}
+    }
+    
+    static func monthNumber(from monthName: String) -> String? {
+        let formatter = DateFormatter()
+        let selectedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage") ?? Locale.current.languageCode ?? "en"
+        formatter.locale = Locale(identifier: selectedLanguage)
+        formatter.dateFormat = "LLLL"
+
+        for month in 1...12 {
+            let dateComponents = DateComponents(calendar: Calendar.current, year: 2000, month: month)
+            if let date = dateComponents.date {
+                let name = formatter.string(from: date)
+                if name.lowercased() == monthName.lowercased() {
+                    return String(format: "%02d", month)
+                }
+            }
+        }
+        return nil
+    }
 }

@@ -23,8 +23,32 @@
 "theme_light" = "Light";
 "theme_dark" = "Dark";
 
-"settings_language" = "Language";
 
+"settings_language" = "Language";
 "settings_policy" = "Legal";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_terms_of_service" = "Terms of Service";
+"settings_feedback_header" = "Support and Feedback";
+"settings_send_feedback" = "Send Feedback";
+"settings_report_problem" = "Report a Problem";
+"settings_help_faq" = "Help & FAQ";
+"settings_storage_header" = "Storage and Cache";
+"settings_cache_toggle" = "Enable photo thumbnail cache";
+"settings_cache_size" = "Current cache size";
+"settings_clear_cache" = "Clear cache";
+"settings_interface_header" = "Animations and Interface";
+"settings_swipe_animation" = "Enable swipe animations";
+"settings_thumbnail_size" = "Thumbnail size";
+"thumb_size_small" = "Small";
+"thumb_size_medium" = "Medium";
+"thumb_size_large" = "Large";
+"settings_subscription_header" = "Subscription";
+"settings_current_plan" = "Current plan";
+"settings_upgrade_pro" = "Upgrade to Pro";
+"settings_restore_purchases" = "Restore purchases";
+"settings_about_header" = "About App";
+"settings_app_name" = "App Name";
+"settings_app_version" = "Version";
+"settings_app_author" = "Developer";
+"settings_app_website" = "Visit Website";
+

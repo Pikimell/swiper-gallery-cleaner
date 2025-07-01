@@ -14,6 +14,7 @@ enum AppThemeMode: String, CaseIterable, Identifiable {
     }
 }
 
+
 struct SettingsView: View {
     @AppStorage("selectedTheme") private var selectedTheme: AppThemeMode = .system
     @AppStorage("selectedLanguage") private var selectedLanguage: String = Locale.current.identifier
@@ -37,14 +38,13 @@ struct SettingsView: View {
                     }
                 }
 
-                Section(header: Text("settings_policy".localized)) {
-                    Button("settings_privacy_policy".localized) {
-                        // Insert privacy policy URL here
-                    }
-                    Button("settings_terms_of_service".localized) {
-                        // Insert terms of service URL here
-                    }
-                }
+                AnimationSectionView()
+                StorageSectionView()
+                SubscriptionSectionView()
+                FeedbackSectionView()
+                PolicySectionView()
+                //AboutAppSectionView()
+                
             }
             .navigationTitle("settings_title".localized)
         }

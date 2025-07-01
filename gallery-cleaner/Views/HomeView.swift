@@ -73,9 +73,25 @@ struct HomeView: View {
                                         if let count = viewModel.groupedPhotos[month]?.count {
                                             NavigationLink(value: month) {
                                                 HStack {
-                                                    Text(month)
+                                                    HStack(spacing: 12) {
+                                                    // Витягуємо номер місяця
+                                                    let number = String(month.prefix(2)) // перші 2 символи — "01", "02", ...
+
+                                                    // Витягуємо назву без номера
+                                                    let nameStartIndex = month.index(month.startIndex, offsetBy: 3)
+                                                    let name = String(month[nameStartIndex...]) // усе після номера
+
+                                                    Text(number)
+                                                        .font(.caption)
+                                                        .fontWeight(.bold)
+                                                        .foregroundColor(theme.accent)
+                                                        .frame(width: 28, height: 28)
+                                                        .background(Circle().fill(.white))
+
+                                                    Text(name)
                                                         .foregroundColor(theme.textPrimary)
-                                                        .padding()
+                                                }
+                                                .padding()
                                                     Spacer()
                                                     Text("photo_count".localized(with: count))
                                                         .foregroundColor(theme.textSecondary)
@@ -127,11 +143,14 @@ struct HomeView: View {
         let keys = viewModel.groupedPhotos.keys
         let monthYearPairs = keys.compactMap { key -> (String, String)? in
             let parts = key.split(separator: " ")
-            guard parts.count == 2 else { return nil }
-            return (key, String(parts[1]))
+            guard parts.count >= 3 else { return nil }
+            let year = String(parts[2])  // третя частина — рік
+            return (key, year)
         }
 
-        let grouped = Dictionary(grouping: monthYearPairs, by: { $0.1 })
-        return grouped.mapValues { $0.map { $0.0 }.sorted(by: >) }.sorted { $0.key > $1.key }
+        let grouped = Dictionary(grouping: monthYearPairs, by: { $0.1 })  // групуємо по року
+        return grouped
+            .mapValues { $0.map { $0.0 }.sorted(by: >) }  // сортуємо місяці в межах року
+            .sorted { $0.key > $1.key }  // сортуємо роки
     }
 }

@@ -24,8 +24,31 @@
 "theme_light" = "Світла";
 "theme_dark" = "Темна";
 
-"settings_language" = "Мова";
 
+"settings_language" = "Мова";
 "settings_policy" = "Правові документи";
 "settings_privacy_policy" = "Політика конфіденційності";
 "settings_terms_of_service" = "Умови користування";
+"settings_feedback_header" = "Підтримка та відгук";
+"settings_send_feedback" = "Надіслати відгук";
+"settings_report_problem" = "Повідомити про проблему";
+"settings_help_faq" = "Допомога та FAQ";
+"settings_storage_header" = "Сховище та кеш";
+"settings_cache_toggle" = "Увімкнути кеш мініатюр фото";
+"settings_cache_size" = "Поточний розмір кешу";
+"settings_clear_cache" = "Очистити кеш";
+"settings_interface_header" = "Анімації та інтерфейс";
+"settings_swipe_animation" = "Увімкнути анімації свайпу";
+"settings_thumbnail_size" = "Розмір мініатюр";
+"thumb_size_small" = "Малий";
+"thumb_size_medium" = "Середній";
+"thumb_size_large" = "Великий";
+"settings_subscription_header" = "Підписка";
+"settings_current_plan" = "Поточний план";
+"settings_upgrade_pro" = "Оновити до Pro";
+"settings_restore_purchases" = "Відновити покупки";
+"settings_about_header" = "Про застосунок";
+"settings_app_name" = "Назва застосунку";
+"settings_app_version" = "Версія";
+"settings_app_author" = "Розробник";
+"settings_app_website" = "Відвідати сайт";
