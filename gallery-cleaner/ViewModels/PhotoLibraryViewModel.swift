@@ -56,7 +56,11 @@ class PhotoLibraryViewModel: ObservableObject {
             // Очищення перед оновленням
             self.groupedPhotos.removeAll()
             // Сортування груп за ключем (місяць-рік)
-            let sortedGrouped = grouped.sorted { $0.key < $1.key }
+            let sortedGrouped = grouped.sorted { 
+                guard let date1 = $0.value.first?.creationDate,
+                let date2 = $1.value.first?.creationDate else { return false }
+                return date1 > date2 
+            }
             self.groupedPhotos = Dictionary(uniqueKeysWithValues: sortedGrouped)
             self.isLoading = false
         }
