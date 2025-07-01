@@ -13,6 +13,10 @@ struct gallery_cleanerApp: App {
     @StateObject private var trashManager = TrashManager()
     @StateObject private var viewModel = PhotoLibraryViewModel()
 
+    init() {
+            sleep(2) // тимчасово затримка 2 сек
+        }
+    
     var body: some Scene {
         WindowGroup {
             MainTabView()
