@@ -4,7 +4,7 @@
 //
 //  Created by Володимир Пащенко on 30.06.2025.
 //
-
+import GoogleMobileAds
 import SwiftUI
 
 
@@ -12,9 +12,11 @@ import SwiftUI
 struct gallery_cleanerApp: App {
     @StateObject private var trashManager = TrashManager()
     @StateObject private var viewModel = PhotoLibraryViewModel()
-
+    
     init() {
-            sleep(2) // тимчасово затримка 2 сек
+            MobileAds.shared.start { status in
+                print("AdMob started: \(status.adapterStatusesByClassName)")
+            }
         }
     
     var body: some Scene {
