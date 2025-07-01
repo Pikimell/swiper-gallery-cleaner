@@ -38,8 +38,8 @@ struct SettingsView: View {
                     }
                 }
 
-                AnimationSectionView()
-                StorageSectionView()
+                //AnimationSectionView()
+                //StorageSectionView()
                 SubscriptionSectionView()
                 FeedbackSectionView()
                 PolicySectionView()

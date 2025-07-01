@@ -17,6 +17,7 @@ struct PhotoThumbnailView: View {
                     .frame(width: width, height: height)
                     .clipped()
                     .cornerRadius(8)
+                    .drawingGroup()
             } else {
                 Rectangle()
                     .fill(theme.border.opacity(0.3))
@@ -26,8 +27,16 @@ struct PhotoThumbnailView: View {
             }
         }
         .onAppear {
-            photo.thumbnail(targetSize: CGSize(width: 150, height: 150)) { result in
-                self.image = result
+            let cacheKey = photo.id
+            if let cached = ImageCacheManager.shared.getImage(for: cacheKey) {
+                self.image = cached
+            } else {
+                photo.thumbnail(targetSize: CGSize(width: 150, height: 150)) { result in
+                    if let result = result {
+                        ImageCacheManager.shared.setImage(result, for: cacheKey)
+                        self.image = result
+                    }
+                }
             }
         }
     }

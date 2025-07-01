@@ -27,21 +27,18 @@ struct StorageSectionView: View {
             }
         }
         .onAppear {
-            loadCacheSize()
+            updateCacheSize()
         }
     }
 
-    // Імітація завантаження обсягу кешу
-    private func loadCacheSize() {
-        // Тут має бути логіка обчислення кешу, поки — заглушка
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.cacheSize = "23.4 MB"  // тимчасове значення
-        }
+    private func updateCacheSize() {
+        let bytes = ImageCacheManager.shared.totalCacheSizeInBytes()
+        let sizeInMB = Double(bytes) / 1024 / 1024
+        self.cacheSize = String(format: "%.1f MB", sizeInMB)
     }
 
-    // Імітація очищення кешу
     private func clearCache() {
-        // Очистити кеш фото або мініатюр тут
-        self.cacheSize = "0 MB"
+        ImageCacheManager.shared.clearCache()
+        updateCacheSize()
     }
 }
