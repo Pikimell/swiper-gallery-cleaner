@@ -126,6 +126,8 @@ struct HomeView: View {
                     )
                 }
             }
+            BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
+                .frame(height: 50)
         }
         .background(theme.background)
         .onAppear {

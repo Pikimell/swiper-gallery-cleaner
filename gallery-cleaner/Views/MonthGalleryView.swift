@@ -12,6 +12,7 @@ struct MonthGalleryView: View {
     @EnvironmentObject var trashManager: TrashManager
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @State private var showTrash = false
+    @StateObject private var interstitialAd = InterstitialAd(adUnitID: "ca-app-pub-3940256099942544/4411468910")
     @Environment(\.theme) private var theme
     @ObservedObject var localization = LocalizationManager.shared
 
@@ -126,7 +127,14 @@ struct MonthGalleryView: View {
         .sheet(isPresented: $showTrash) {
             TrashView()
                 .environmentObject(trashManager)
-                .environmentObject(viewModel) 
+                .environmentObject(viewModel)
+        }
+        .onAppear {
+            if let root = UIApplication.shared.connectedScenes
+                .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController })
+                .first {
+                interstitialAd.showAd(from: root)
+            }
         }
     }
 
