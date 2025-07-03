@@ -5,6 +5,10 @@ struct TrashView: View {
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @ObservedObject var localization = LocalizationManager.shared
 
+    @StateObject private var adManager = InterstitialAdManager(adUnitID: "ca-app-pub-3940256099942544/4411468910")
+    @State private var showAd = false
+    @State private var shouldDelete = false
+
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -22,9 +26,9 @@ struct TrashView: View {
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 10) {
                             ForEach(trashManager.trashedPhotos, id: \.id) { photo in
-                                PhotoThumbnailView(photo: photo, 
-                                    width: UIScreen.main.bounds.width / 3 - 16,
-                                    height: UIScreen.main.bounds.width / 3 - 16)
+                                PhotoThumbnailView(photo: photo,
+                                                   width: UIScreen.main.bounds.width / 3 - 16,
+                                                   height: UIScreen.main.bounds.width / 3 - 16)
                                     .onTapGesture {
                                         trashManager.restorePhoto(photo)
                                     }
@@ -34,7 +38,12 @@ struct TrashView: View {
                     }
 
                     Button(role: .destructive) {
-                        trashManager.deleteAllFromLibrary(viewModel: viewModel)
+                        if let rootVC = UIApplication.shared.connectedScenes
+                            .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController })
+                            .first {
+                            adManager.showAd(from: rootVC)
+                            shouldDelete = true
+                        }
                     } label: {
                         Text("trash_delete_all".localized)
                             .font(.headline)
@@ -49,6 +58,12 @@ struct TrashView: View {
                 }
             }
             .navigationTitle("trash_title".localized)
+            .onReceive(adManager.$didDismissAd) { dismissed in
+                if dismissed && shouldDelete {
+                    trashManager.deleteAllFromLibrary(viewModel: viewModel)
+                    shouldDelete = false
+                }
+            }
         }
     }
 }

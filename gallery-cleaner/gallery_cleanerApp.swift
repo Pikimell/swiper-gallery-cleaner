@@ -15,7 +15,7 @@ struct gallery_cleanerApp: App {
     
     init() {
             MobileAds.shared.start { status in
-                print("AdMob started: \(status.adapterStatusesByClassName)")
+                print("AdMob started: \(status.adapterStatusesByClassName)!")
             }
         }
     

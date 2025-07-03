@@ -8,15 +8,11 @@
 import SwiftUI
 
 struct HomeView_Previews: PreviewProvider {
+    @State static var selectedTab = 0
+
     static var previews: some View {
-        HomeView()
+        HomeView(selectedTab: $selectedTab)
             .environmentObject(PhotoLibraryViewModel())
             .environmentObject(TrashManager())
     }
-}
-
-#Preview {
-    HomeView()
-        .environmentObject(PhotoLibraryViewModel())
-        .environmentObject(TrashManager())
 }

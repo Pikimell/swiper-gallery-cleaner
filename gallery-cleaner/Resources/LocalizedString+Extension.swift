@@ -4,7 +4,7 @@ import SwiftUI
 class LocalizationManager: ObservableObject {
     static let shared = LocalizationManager()
 
-    @AppStorage("selectedLanguage") var selectedLanguage: String = Locale.current.languageCode ?? "en" {
+    @AppStorage("selectedLanguage") var selectedLanguage: String = Locale.current.language.languageCode?.identifier ?? "en" {
         didSet {
             objectWillChange.send()
         }

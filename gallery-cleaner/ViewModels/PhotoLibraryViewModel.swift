@@ -74,7 +74,7 @@ class PhotoLibraryViewModel: ObservableObject {
     let formatter = DateFormatter()
     
     // Витягуємо вибрану мову з AppStorage
-    let selectedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage") ?? Locale.current.languageCode ?? "en"
+    let selectedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage") ?? Locale.current.language.languageCode?.identifier ?? "en"
     formatter.locale = Locale(identifier: selectedLanguage)
 
     formatter.dateFormat = "LLLL yyyy"
@@ -83,7 +83,7 @@ class PhotoLibraryViewModel: ObservableObject {
     
     static func monthNumber(from monthName: String) -> String? {
         let formatter = DateFormatter()
-        let selectedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage") ?? Locale.current.languageCode ?? "en"
+        let selectedLanguage = UserDefaults.standard.string(forKey: "selectedLanguage") ?? Locale.current.language.languageCode?.identifier ?? "en"
         formatter.locale = Locale(identifier: selectedLanguage)
         formatter.dateFormat = "LLLL"
 
@@ -97,5 +97,10 @@ class PhotoLibraryViewModel: ObservableObject {
             }
         }
         return nil
+    }
+    
+    func refreshPhotos() {
+        groupedPhotos = [:]
+        fetchPhotos()
     }
 }

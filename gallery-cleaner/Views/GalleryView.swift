@@ -1,10 +1,12 @@
 import SwiftUI
-
+import GoogleMobileAds
 
 struct GalleryView: View {
-    @StateObject private var viewModel = PhotoLibraryViewModel()
+    @Binding var selectedTab: Int
+    @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @EnvironmentObject var trashManager: TrashManager
     @State private var showTrash = false
+    @State private var navigateToTrash = false
     @Environment(\.theme) private var theme
     @ObservedObject var localization = LocalizationManager.shared
 
@@ -21,21 +23,33 @@ struct GalleryView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                Group {
-                    if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
-                        Text("gallery_access_danied".localized)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                    } else if viewModel.isLoading {
-                        ProgressView("home_load_photos".localized)
-                    } else {
-                        ScrollView {
-                            photoGrid
+            ZStack(alignment: .bottom) {
+                VStack(spacing: 0) {
+                    Group {
+                        if viewModel.authorizationStatus == .denied || viewModel.authorizationStatus == .restricted {
+                            Text("gallery_access_danied".localized)
+                                .multilineTextAlignment(.center)
+                                .padding()
+                        } else if viewModel.isLoading {
+                            ProgressView("home_load_photos".localized)
+                        } else {
+                            ScrollView {
+                                photoGrid
+                                    .padding(.bottom, 70) // Щоб банер не перекривав фото
+                            }
                         }
                     }
+                    trashButton
                 }
-                trashButton
+
+                // Банер поверх усього
+                if trashManager.trashedPhotos.isEmpty {
+                    BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716") // Тестовий ID
+                        .frame(width: 320, height: 50)
+                        .background(Color.clear)
+                        .padding(.bottom, 4)
+                }
+                
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -64,9 +78,9 @@ struct GalleryView: View {
     private var trashButton: some View {
         if allPhotos.contains(where: { trashManager.trashedPhotos.contains($0) }) {
             Button(action: {
-                showTrash = true
+                selectedTab = 2 // індекс вкладки TrashView
             }) {
-                Text("go_to_trash".localized(with:trashManager.trashedPhotos.count))
+                Text("go_to_trash".localized(with: trashManager.trashedPhotos.count))
                     .font(.headline)
                     .foregroundColor(theme.textPrimary)
                     .padding()
@@ -85,7 +99,7 @@ struct GalleryView: View {
                 photoCell(for: photo)
             }
         }
-        .padding()
+        .padding(.horizontal)
     }
 
     private func photoCell(for photo: PhotoItem) -> some View {
