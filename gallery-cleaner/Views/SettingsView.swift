@@ -23,21 +23,9 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("settings_appearance".localized)) {
-                    Picker("settings_theme".localized, selection: $selectedTheme) {
-                        ForEach(AppThemeMode.allCases) { mode in
-                            Text(mode.localizedTitle).tag(mode)
-                        }
-                    }
-                }
-
-                Section(header: Text("settings_language".localized)) {
-                    Picker("settings_language".localized, selection: $selectedLanguage) {
-                        Text("English").tag("en")
-                        Text("Українська").tag("uk")
-                    }
-                }
-
+                
+                ApperanceSectionView(selectedTheme: $selectedTheme)
+                LanguageSectionView(selectedLanguage: $selectedLanguage)
                 //AnimationSectionView()
                 //StorageSectionView()
                 SubscriptionSectionView()

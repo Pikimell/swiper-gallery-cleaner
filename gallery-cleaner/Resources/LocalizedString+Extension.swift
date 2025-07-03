@@ -11,11 +11,20 @@ class LocalizationManager: ObservableObject {
     }
 
     var bundle: Bundle {
-        if let path = Bundle.main.path(forResource: selectedLanguage, ofType: "lproj"),
+        let lang = normalizedLanguageCode
+        if let path = Bundle.main.path(forResource: lang, ofType: "lproj"),
            let bundle = Bundle(path: path) {
             return bundle
         }
         return .main
+    }
+
+    private var normalizedLanguageCode: String {
+        // Усуваємо можливі "uk_UA", "en_EN", залишаємо лише "uk", "en"
+        if selectedLanguage.contains("_") {
+            return selectedLanguage.components(separatedBy: "_").first ?? "en"
+        }
+        return selectedLanguage
     }
 
     func localizedString(forKey key: String) -> String {
