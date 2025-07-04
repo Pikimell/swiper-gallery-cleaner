@@ -1,0 +1,17 @@
+{
+  "data": {
+    "products": [
+      {
+        "id": "com.example.subscription",
+        "type": "auto-renewable subscription",
+        "subscription": {
+          "groupID": "com.example.subscription.group",
+          "duration": "P1M"
+        },
+        "displayName": "Premium Access",
+        "displayPrice": "$1.99"
+      }
+    ]
+  },
+  "schema": "https://appstoreconnect.apple.com/schema/fastlane/latest/storekit.json"
+}

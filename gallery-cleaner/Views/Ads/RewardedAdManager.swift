@@ -9,7 +9,6 @@ final class RewardedAdManager: NSObject, FullScreenContentDelegate, ObservableOb
     init(adUnitID: String) {
         self.adUnitID = adUnitID
         super.init()
-        loadAd()
     }
 
     // Завантаження реклами
@@ -29,7 +28,6 @@ final class RewardedAdManager: NSObject, FullScreenContentDelegate, ObservableOb
     func showAd(from rootViewController: UIViewController, rewardHandler: @escaping () -> Void) {
         guard let ad = rewardedAd else {
             print("⚠️ Rewarded ad is not ready yet.")
-            loadAd()
             return
         }
 
@@ -44,7 +42,7 @@ final class RewardedAdManager: NSObject, FullScreenContentDelegate, ObservableOb
 
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         print("✅ Rewarded ad dismissed.")
-        loadAd()
+        rewardedAd = nil
     }
 
     func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
