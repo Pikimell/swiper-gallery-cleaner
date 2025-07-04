@@ -1,30 +1,28 @@
 import SwiftUI
 
-enum SubscriptionStatus: String {
-    case free, pro
-}
-
 struct SubscriptionSectionView: View {
-    @AppStorage("subscriptionStatus") private var subscriptionStatusRaw: String = "free"
+    @EnvironmentObject private var storeKit: StoreKitManager
     @Environment(\.theme) private var theme
-
-    private var subscriptionStatus: SubscriptionStatus {
-        SubscriptionStatus(rawValue: subscriptionStatusRaw) ?? .free
-    }
 
     var body: some View {
         Section(header: Text("settings_subscription_header".localized)) {
             HStack {
                 Label("settings_current_plan".localized, systemImage: "person.crop.circle")
                 Spacer()
-                Text(subscriptionStatus == .pro ? "Pro" : "Free")
-                    .foregroundColor(subscriptionStatus == .pro ? .green : .gray)
+                Text(storeKit.isSubscribed ? "Pro" : "Free")
+                    .foregroundColor(storeKit.isSubscribed ? .green : .gray)
                     .fontWeight(.semibold)
             }
 
-            if subscriptionStatus == .free {
+            if let product = storeKit.products.first, !storeKit.isSubscribed {
+                HStack {
+                    Text(product.displayName)
+                    Spacer()
+                    Text(product.displayPrice)
+                }
+
                 Button(action: {
-                    // Запуск покупки Pro
+                    Task { await storeKit.purchase(product) }
                 }) {
                     Label("settings_upgrade_pro".localized, systemImage: "star.fill")
                         .foregroundColor(theme.accent)
@@ -32,7 +30,7 @@ struct SubscriptionSectionView: View {
             }
 
             Button(action: {
-                // Відновлення покупок (Restore Purchases)
+                Task { await storeKit.updateSubscriptionStatus() }
             }) {
                 Label("settings_restore_purchases".localized, systemImage: "arrow.clockwise")
                     .foregroundColor(theme.textPrimary)

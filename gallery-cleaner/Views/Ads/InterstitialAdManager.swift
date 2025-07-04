@@ -25,7 +25,11 @@ final class InterstitialAdManager: NSObject, FullScreenContentDelegate, Observab
         })
     }
 
-    func showAd(from rootViewController: UIViewController) {
+    func showAd(from rootViewController: UIViewController, isSubscribed: Bool) {
+        guard !isSubscribed else {
+            didDismissAd = true
+            return
+        }
         guard let ad = interstitial else {
             print("⚠️ Interstitial ad is not ready yet.")
             loadAd()

@@ -48,6 +48,12 @@
     <key>GADApplicationIdentifier</key>
     <string>ca-app-pub-3833548161293255~7042292125</string>
 
+    <key>SKAdNetworkItems</key>
+    <array/>
+
+    <key>NSUserTrackingUsageDescription</key>
+    <string>We use this data to show relevant ads.</string>
+
     <!-- Доступ до фотографій -->
     <key>NSPhotoLibraryUsageDescription</key>
     <string>This app requires access to your photo library to browse and manage photos.</string>

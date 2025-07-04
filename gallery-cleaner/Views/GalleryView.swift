@@ -5,6 +5,7 @@ struct GalleryView: View {
     @Binding var selectedTab: Int
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @EnvironmentObject var trashManager: TrashManager
+    @EnvironmentObject private var storeKit: StoreKitManager
     @State private var showTrash = false
     @State private var navigateToTrash = false
     @Environment(\.theme) private var theme
@@ -43,7 +44,7 @@ struct GalleryView: View {
                 }
 
                 // Банер поверх усього
-                if trashManager.trashedPhotos.isEmpty {
+                if trashManager.trashedPhotos.isEmpty && !storeKit.isSubscribed {
                     BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716") // Тестовий ID
                         .frame(width: 320, height: 50)
                         .background(Color.clear)
