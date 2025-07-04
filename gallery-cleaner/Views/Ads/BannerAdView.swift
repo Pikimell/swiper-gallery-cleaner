@@ -9,9 +9,11 @@ import SwiftUI
 
 struct BannerAdView: UIViewRepresentable {
     let adUnitID: String
+    @EnvironmentObject private var storeKit: StoreKitManager
 
     func makeUIView(context: Context) -> BannerView {
         let banner = BannerView(adSize: AdSizeBanner)
+        guard !storeKit.isSubscribed else { return banner }
         banner.adUnitID = adUnitID
         banner.rootViewController = UIApplication.shared.connectedScenes
             .compactMap { ($0 as? UIWindowScene)?.windows.first?.rootViewController }
@@ -20,7 +22,9 @@ struct BannerAdView: UIViewRepresentable {
         return banner
     }
 
-    func updateUIView(_ uiView: BannerView, context: Context) {}
+    func updateUIView(_ uiView: BannerView, context: Context) {
+        uiView.isHidden = storeKit.isSubscribed
+    }
 }
 
 #Preview {

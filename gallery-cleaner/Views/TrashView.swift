@@ -3,6 +3,7 @@ import SwiftUI
 struct TrashView: View {
     @EnvironmentObject var trashManager: TrashManager
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
+    @EnvironmentObject private var storeKit: StoreKitManager
     @ObservedObject var localization = LocalizationManager.shared
 
     @StateObject private var adManager = InterstitialAdManager(adUnitID: "ca-app-pub-3940256099942544/4411468910")
@@ -41,7 +42,7 @@ struct TrashView: View {
                         if let rootVC = UIApplication.shared.connectedScenes
                             .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController })
                             .first {
-                            adManager.showAd(from: rootVC)
+                            adManager.showAd(from: rootVC, isSubscribed: storeKit.isSubscribed)
                             shouldDelete = true
                         }
                     } label: {

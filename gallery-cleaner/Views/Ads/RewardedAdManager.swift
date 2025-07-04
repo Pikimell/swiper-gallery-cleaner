@@ -26,7 +26,11 @@ final class RewardedAdManager: NSObject, FullScreenContentDelegate, ObservableOb
     }
 
     // Показ винагороджувальної реклами
-    func showAd(from rootViewController: UIViewController, rewardHandler: @escaping () -> Void) {
+    func showAd(from rootViewController: UIViewController, rewardHandler: @escaping () -> Void, isSubscribed: Bool) {
+        guard !isSubscribed else {
+            rewardHandler()
+            return
+        }
         guard let ad = rewardedAd else {
             print("⚠️ Rewarded ad is not ready yet.")
             loadAd()

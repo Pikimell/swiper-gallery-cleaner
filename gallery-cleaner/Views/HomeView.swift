@@ -1,11 +1,12 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Binding var selectedTab: Int // 
+    @Binding var selectedTab: Int //
     @StateObject private var viewModel = PhotoLibraryViewModel()
     @State private var path: [String] = [] // шлях навігації
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.theme) private var theme
+    @EnvironmentObject private var storeKit: StoreKitManager
     @ObservedObject var localization = LocalizationManager.shared
 
     var body: some View {
@@ -120,9 +121,11 @@ struct HomeView: View {
                             }
 
                             // 🔽 Банер завжди внизу поверх ScrollView
-                            BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
-                                .frame(width: 320, height: 50)
-                                .padding(.bottom, 10)
+                            if !storeKit.isSubscribed {
+                                BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
+                                    .frame(width: 320, height: 50)
+                                    .padding(.bottom, 10)
+                            }
                         }
                     }
                 }
