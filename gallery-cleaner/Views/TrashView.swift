@@ -4,6 +4,7 @@ struct TrashView: View {
     @EnvironmentObject var trashManager: TrashManager
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @ObservedObject var localization = LocalizationManager.shared
+    @EnvironmentObject var storeKit: StoreKitManager
 
     @StateObject private var adManager = InterstitialAdManager(adUnitID: "ca-app-pub-3940256099942544/4411468910")
     @State private var showAd = false

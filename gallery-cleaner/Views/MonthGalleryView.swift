@@ -12,6 +12,7 @@ struct MonthGalleryView: View {
     @EnvironmentObject var trashManager: TrashManager
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @Environment(\.theme) private var theme
+    @EnvironmentObject var storeKit: StoreKitManager
     @ObservedObject var localization = LocalizationManager.shared
 
     var filteredPhotos: [PhotoItem] {

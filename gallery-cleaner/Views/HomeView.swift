@@ -7,6 +7,7 @@ struct HomeView: View {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.theme) private var theme
     @ObservedObject var localization = LocalizationManager.shared
+    @EnvironmentObject var storeKit: StoreKitManager
 
     var body: some View {
         VStack(spacing: 8) {

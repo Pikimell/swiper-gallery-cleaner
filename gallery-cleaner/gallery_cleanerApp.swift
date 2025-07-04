@@ -12,6 +12,7 @@ import SwiftUI
 struct gallery_cleanerApp: App {
     @StateObject private var trashManager = TrashManager()
     @StateObject private var viewModel = PhotoLibraryViewModel()
+    @StateObject private var storeKitManager = StoreKitManager()
     
     init() {
             MobileAds.shared.start { status in
@@ -24,6 +25,7 @@ struct gallery_cleanerApp: App {
             MainTabView()
                    .environmentObject(viewModel)
                    .environmentObject(trashManager)
+                   .environmentObject(storeKitManager)
                    .applyTheme()
         }
     }

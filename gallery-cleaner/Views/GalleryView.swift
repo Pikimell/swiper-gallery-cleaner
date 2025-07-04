@@ -5,6 +5,7 @@ struct GalleryView: View {
     @Binding var selectedTab: Int
     @EnvironmentObject var viewModel: PhotoLibraryViewModel
     @EnvironmentObject var trashManager: TrashManager
+    @EnvironmentObject var storeKit: StoreKitManager
     @State private var showTrash = false
     @State private var navigateToTrash = false
     @Environment(\.theme) private var theme

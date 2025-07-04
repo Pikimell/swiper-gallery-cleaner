@@ -4,10 +4,25 @@
 //
 //  Created by Володимир Пащенко on 01.07.2025.
 //
+
 import GoogleMobileAds
 import SwiftUI
 
-struct BannerAdView: UIViewRepresentable {
+struct BannerAdView: View {
+    @EnvironmentObject var storeKit: StoreKitManager
+    let adUnitID: String
+
+    var body: some View {
+        Group {
+            if !storeKit.isPremiumUser {
+                BannerAdViewRepresentable(adUnitID: adUnitID)
+                    .frame(height: 50)
+            }
+        }
+    }
+}
+
+private struct BannerAdViewRepresentable: UIViewRepresentable {
     let adUnitID: String
 
     func makeUIView(context: Context) -> BannerView {
@@ -24,5 +39,6 @@ struct BannerAdView: UIViewRepresentable {
 }
 
 #Preview {
-    BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716") // тестовий ID
+    BannerAdView(adUnitID: "ca-app-pub-3940256099942544/2934735716")
+        .environmentObject(StoreKitManager())
 }

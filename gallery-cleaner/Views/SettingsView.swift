@@ -19,6 +19,7 @@ struct SettingsView: View {
     @AppStorage("selectedTheme") private var selectedTheme: AppThemeMode = .system
     @AppStorage("selectedLanguage") private var selectedLanguage: String = Locale.current.identifier
     @ObservedObject var localization = LocalizationManager.shared
+    @EnvironmentObject var storeKit: StoreKitManager
 
     var body: some View {
         NavigationView {
