@@ -39,7 +39,9 @@ struct TrashView: View {
                     }
 
                     Button(role: .destructive) {
-                        if let rootVC = UIApplication.shared.connectedScenes
+                        if storeKit.isPremiumUser {
+                            trashManager.deleteAllFromLibrary(viewModel: viewModel)
+                        } else if let rootVC = UIApplication.shared.connectedScenes
                             .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController })
                             .first {
                             adManager.showAd(from: rootVC)
@@ -59,10 +61,18 @@ struct TrashView: View {
                 }
             }
             .navigationTitle("trash_title".localized)
+            .onAppear {
+                if !storeKit.isPremiumUser {
+                    adManager.loadAd()
+                }
+            }
             .onReceive(adManager.$didDismissAd) { dismissed in
                 if dismissed && shouldDelete {
                     trashManager.deleteAllFromLibrary(viewModel: viewModel)
                     shouldDelete = false
+                }
+                if !storeKit.isPremiumUser {
+                    adManager.loadAd()
                 }
             }
         }

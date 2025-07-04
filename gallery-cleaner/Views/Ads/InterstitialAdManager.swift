@@ -10,7 +10,6 @@ final class InterstitialAdManager: NSObject, FullScreenContentDelegate, Observab
     init(adUnitID: String) {
         self.adUnitID = adUnitID
         super.init()
-        loadAd()
     }
 
     func loadAd() {
@@ -28,7 +27,6 @@ final class InterstitialAdManager: NSObject, FullScreenContentDelegate, Observab
     func showAd(from rootViewController: UIViewController) {
         guard let ad = interstitial else {
             print("⚠️ Interstitial ad is not ready yet.")
-            loadAd()
             return
         }
         ad.present(from: rootViewController)
@@ -43,6 +41,6 @@ final class InterstitialAdManager: NSObject, FullScreenContentDelegate, Observab
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         print("✅ Interstitial ad was dismissed.")
         didDismissAd = true
-        loadAd()
+        interstitial = nil
     }
 }

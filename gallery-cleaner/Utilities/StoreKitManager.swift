@@ -2,50 +2,94 @@ import Foundation
 import StoreKit
 
 @MainActor
-class StoreKitManager: ObservableObject {
-    @Published var isPremiumUser = false
-    private let productID = "your_product_id" // заміни на справжній ID підписки
+final class StoreKitManager: ObservableObject {
+    @Published var isPremiumUser: Bool = false
+    @Published var products: [Product] = []
+
+    private let productID = "com.example.subscription" // Replace with your real product id
+    private var updateListenerTask: Task<Void, Never>?
 
     init() {
+        updateListenerTask = listenForTransactions()
         Task {
+            await requestProducts()
             await updateSubscriptionStatus()
         }
     }
 
-    func updateSubscriptionStatus() async {
+    deinit {
+        updateListenerTask?.cancel()
+    }
+
+    // MARK: - Product Loading
+    func requestProducts() async {
         do {
-            let products = try await Product.products(for: [productID])
-            guard let product = products.first else { return }
-
-            guard let subscription = product.subscription else { return }
-
-            let statuses = try await subscription.status
-
-            for status in statuses {
-                switch status.state {
-                case .subscribed:
-                    isPremiumUser = true
-                    UserDefaults.standard.set(true, forKey: "isPremium")
-                    return
-                default:
-                    break
-                }
-            }
-
-            isPremiumUser = false
-            UserDefaults.standard.set(false, forKey: "isPremium")
-
+            products = try await Product.products(for: [productID])
         } catch {
-            print("❌ Error checking subscription status: \(error)")
+            print("❌ Failed to load products: \(error)")
         }
     }
 
+    // MARK: - Purchasing
+    func purchaseSubscription() async {
+        guard let product = products.first else { return }
+        do {
+            let result = try await product.purchase()
+            switch result {
+            case .success(let verification):
+                let transaction = try checkVerified(verification)
+                await transaction.finish()
+                await updateSubscriptionStatus()
+            case .pending, .userCancelled:
+                break
+            @unknown default:
+                break
+            }
+        } catch {
+            print("❌ Purchase error: \(error)")
+        }
+    }
+
+    // MARK: - Status
+    func updateSubscriptionStatus() async {
+        var premium = false
+        for await result in Transaction.currentEntitlements {
+            if result.productID == productID && result.revocationDate == nil {
+                premium = true
+                break
+            }
+        }
+        isPremiumUser = premium
+        UserDefaults.standard.set(premium, forKey: "isPremium")
+    }
+
+    // MARK: - Restore
     func restore() async {
         do {
             try await AppStore.sync()
             await updateSubscriptionStatus()
         } catch {
             print("❌ Error restoring purchases: \(error)")
+        }
+    }
+
+    // MARK: - Transaction updates
+    private func listenForTransactions() -> Task<Void, Never> {
+        Task.detached { [weak self] in
+            for await verification in Transaction.updates {
+                guard let self, let transaction = try? self.checkVerified(verification) else { continue }
+                await self.updateSubscriptionStatus()
+                await transaction.finish()
+            }
+        }
+    }
+
+    private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
+        switch result {
+        case .unverified(_, let error):
+            throw error
+        case .verified(let signed):
+            return signed
         }
     }
 }
