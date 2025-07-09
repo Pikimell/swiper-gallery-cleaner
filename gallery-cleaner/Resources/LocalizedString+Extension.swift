@@ -20,7 +20,6 @@ class LocalizationManager: ObservableObject {
     }
 
     private var normalizedLanguageCode: String {
-        // Усуваємо можливі "uk_UA", "en_EN", залишаємо лише "uk", "en"
         if selectedLanguage.contains("_") {
             return selectedLanguage.components(separatedBy: "_").first ?? "en"
         }
