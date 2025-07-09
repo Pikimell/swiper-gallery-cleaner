@@ -28,12 +28,13 @@ struct SettingsView: View {
                 ApperanceSectionView(selectedTheme: $selectedTheme)
                 LanguageSectionView(selectedLanguage: $selectedLanguage)
                 //AnimationSectionView()
+                StorageCleanupStatsSection()
                 StorageSectionView()
 //                SubscriptionSectionView()
                 FeedbackSectionView()
                 FAQSectionView()
                 PolicySectionView()
-                //AboutAppSectionView()
+//                AboutAppSectionView()
                 
             }
             .navigationTitle("settings_title".localized)

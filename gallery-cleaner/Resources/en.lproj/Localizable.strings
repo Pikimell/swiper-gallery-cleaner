@@ -52,6 +52,11 @@
 "settings_app_author" = "Developer";
 "settings_app_website" = "Visit Website";
 
+"settings_cleanup_stats_header" = "Cleanup Statistics";
+"settings_cleanup_total_size" = "Storage Freed";
+"settings_cleanup_total_count" = "Deleted Photos Count";
+"settings_cleanup_reset_stats" = "Reset Statistics";
+
 
 "duplicates_title" = "Smart Cleaner";
 "scan_title" = "Find Duplicates";

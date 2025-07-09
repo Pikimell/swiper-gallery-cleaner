@@ -53,6 +53,11 @@
 "settings_app_author" = "Розробник";
 "settings_app_website" = "Відвідати сайт";
 
+"settings_cleanup_stats_header" = "Статистика очищення";
+"settings_cleanup_total_size" = "Звільнено місця";
+"settings_cleanup_total_count" = "Кількість видалених фото";
+"settings_cleanup_reset_stats" = "Скинути статистику";
+
 
 "duplicates_title" = "Розумний пошук";
 "scan_title" = "Пошук дублікатів";
