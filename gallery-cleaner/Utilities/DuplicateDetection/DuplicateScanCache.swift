@@ -12,13 +12,18 @@ final class DuplicateScanCache {
     static let shared = DuplicateScanCache()
 
     private init() {
-        loadSHA256Cache()
-        loadPixelHashCache()
+        loadFromDisk()
     }
 
-    // MARK: - Ключі для збереження
-    private let sha256Key = "cache_sha256"
-    private let pixelKey = "cache_pixel"
+    // MARK: - Папка кешу
+    private let fileManager = FileManager.default
+    private lazy var cacheDirectory: URL = {
+        let url = fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0].appendingPathComponent("ImageHashes")
+        if !fileManager.fileExists(atPath: url.path) {
+            try? fileManager.createDirectory(at: url, withIntermediateDirectories: true)
+        }
+        return url
+    }()
 
     // MARK: - Кеш у памʼяті
     private var sha256Hashes: [String: String] = [:]
@@ -32,7 +37,7 @@ final class DuplicateScanCache {
 
     func setSHA256(_ hash: String, for photoID: String) {
         sha256Hashes[photoID] = hash
-        saveSHA256Cache()
+        saveDictionary(sha256Hashes, to: "sha256.json")
     }
 
     // MARK: - PixelHash
@@ -42,10 +47,10 @@ final class DuplicateScanCache {
 
     func setPixelHash(_ hash: String, for photoID: String) {
         pixelHashes[photoID] = hash
-        savePixelHashCache()
+        saveDictionary(pixelHashes, to: "pixel.json")
     }
 
-    // MARK: - Vision FeaturePrint
+    // MARK: - Vision FeaturePrint (RAM only)
     func getVisionPrint(for photoID: String) -> VNFeaturePrintObservation? {
         return visionPrints[photoID]
     }
@@ -56,44 +61,44 @@ final class DuplicateScanCache {
 
     // MARK: - Очищення
     func clearAll() {
-        clearSHA()
-        clearPixel()
-        clearVision()
-    }
-
-    func clearSHA() {
         sha256Hashes.removeAll()
-        UserDefaults.standard.removeObject(forKey: sha256Key)
-    }
-
-    func clearPixel() {
         pixelHashes.removeAll()
-        UserDefaults.standard.removeObject(forKey: pixelKey)
-    }
-
-    func clearVision() {
         visionPrints.removeAll()
+
+        try? fileManager.removeItem(at: cacheDirectory)
+        try? fileManager.createDirectory(at: cacheDirectory, withIntermediateDirectories: true)
     }
 
-    // MARK: - Збереження на диск
-    private func saveSHA256Cache() {
-        UserDefaults.standard.set(sha256Hashes, forKey: sha256Key)
-    }
-
-    private func savePixelHashCache() {
-        UserDefaults.standard.set(pixelHashes, forKey: pixelKey)
-    }
-
-    // MARK: - Завантаження з диску
-    private func loadSHA256Cache() {
-        if let saved = UserDefaults.standard.dictionary(forKey: sha256Key) as? [String: String] {
-            sha256Hashes = saved
+    // MARK: - Розмір кешу
+    func totalCacheSizeInBytes() -> Int {
+        guard let files = try? fileManager.contentsOfDirectory(at: cacheDirectory, includingPropertiesForKeys: [.fileSizeKey]) else { return 0 }
+        return files.reduce(0) { total, fileURL in
+            let size = (try? fileURL.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+            return total + size
         }
     }
 
-    private func loadPixelHashCache() {
-        if let saved = UserDefaults.standard.dictionary(forKey: pixelKey) as? [String: String] {
-            pixelHashes = saved
+    // MARK: - Приватні методи
+    private func fileURL(for name: String) -> URL {
+        return cacheDirectory.appendingPathComponent(name)
+    }
+
+    private func saveDictionary(_ dict: [String: String], to filename: String) {
+        let url = fileURL(for: filename)
+        if let data = try? JSONEncoder().encode(dict) {
+            try? data.write(to: url)
+        }
+    }
+
+    private func loadFromDisk() {
+        if let data = try? Data(contentsOf: fileURL(for: "sha256.json")),
+           let decoded = try? JSONDecoder().decode([String: String].self, from: data) {
+            sha256Hashes = decoded
+        }
+
+        if let data = try? Data(contentsOf: fileURL(for: "pixel.json")),
+           let decoded = try? JSONDecoder().decode([String: String].self, from: data) {
+            pixelHashes = decoded
         }
     }
 }

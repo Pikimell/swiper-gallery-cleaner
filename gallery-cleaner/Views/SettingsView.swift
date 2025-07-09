@@ -28,7 +28,7 @@ struct SettingsView: View {
                 ApperanceSectionView(selectedTheme: $selectedTheme)
                 LanguageSectionView(selectedLanguage: $selectedLanguage)
                 //AnimationSectionView()
-                //StorageSectionView()
+                StorageSectionView()
 //                SubscriptionSectionView()
                 FeedbackSectionView()
                 FAQSectionView()

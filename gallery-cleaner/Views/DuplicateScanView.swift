@@ -1,17 +1,16 @@
 import SwiftUI
 
 enum DuplicateScanMode: String, CaseIterable, Identifiable {
-    case exact
     case pixel
-    case vision
+    case exact
+    
 
     var id: String { rawValue }
 
     var localizedTitle: String {
         switch self {
-        case .exact: return "scan_mode_exact".localized
         case .pixel: return "scan_mode_pixel".localized
-        case .vision: return "scan_mode_vision".localized
+        case .exact: return "scan_mode_exact".localized
         }
     }
 }
@@ -22,7 +21,7 @@ struct DuplicateScanView: View {
     @EnvironmentObject var trashManager: TrashManager
     @Environment(\.theme) private var theme
 
-    @State private var selectedMode: DuplicateScanMode = .exact
+    @State private var selectedMode: DuplicateScanMode = .pixel
     @State private var isScanning = false
     @State private var resultGroups: [[PhotoItem]] = []
 
@@ -205,14 +204,14 @@ struct DuplicateScanView: View {
                 progress: updateProgress,
                 completion: complete
             )
-        case .vision:
-            VisionFeaturePrintDetector.groupSimilarPhotos(
-                from: photos,
-                targetSize: CGSize(width: 224, height: 224),
-                threshold: 0.05,
-                progress: updateProgress,
-                completion: complete
-            )
+//        case .vision:
+//            VisionFeaturePrintDetector.groupSimilarPhotos(
+//                from: photos,
+//                targetSize: CGSize(width: 224, height: 224),
+//                threshold: 0.05,
+//                progress: updateProgress,
+//                completion: complete
+//            )
         }
     }
 }

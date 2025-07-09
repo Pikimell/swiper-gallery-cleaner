@@ -4,7 +4,7 @@ struct PhotoThumbnailView: View {
     let photo: PhotoItem
     var width: CGFloat = 100
     var height: CGFloat = 100
-    let holdDuration: Double = 1.0
+    let holdDuration: Double = 0.3
 
     @State private var image: UIImage?
     @State private var fullImage: UIImage?
