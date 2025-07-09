@@ -59,5 +59,5 @@ _Last updated: July 9, 2025._
 
 If you have any questions or suggestions about this Privacy Policy, do not hesitate to contact us at:
 
-**Email:** gallerycleaner.app@gmail.com  
+**Email:** support@devtrail-it.com  
 **Developer:** Volodymyr Pashchenko
