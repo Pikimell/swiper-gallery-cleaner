@@ -2,48 +2,67 @@ import Foundation
 import StoreKit
 
 @MainActor
-class StoreKitManager: ObservableObject {
-    @Published var isPremiumUser = false
-    private let productID = "your_product_id" // заміни на справжній ID підписки
+final class StoreKitManager: ObservableObject {
+    @Published var isProUser: Bool = UserDefaults.standard.bool(forKey: "isProUser")
+    @Published var product: Product?
+    private let productID = "gallery_easy_cleaner_vip"
 
     init() {
         Task {
-            await updateSubscriptionStatus()
+            await fetchProduct()
+            await updatePurchasedStatus()
         }
     }
 
-    func updateSubscriptionStatus() async {
+    /// Loads product metadata from the App Store.
+    func fetchProduct() async {
         do {
             let products = try await Product.products(for: [productID])
-            guard let product = products.first else { return }
-
-            guard let subscription = product.subscription else { return }
-
-            let statuses = try await subscription.status
-
-            for status in statuses {
-                switch status.state {
-                case .subscribed:
-                    isPremiumUser = true
-                    UserDefaults.standard.set(true, forKey: "isPremium")
-                    return
-                default:
-                    break
-                }
-            }
-
-            isPremiumUser = false
-            UserDefaults.standard.set(false, forKey: "isPremium")
-
+            product = products.first
         } catch {
-            print("❌ Error checking subscription status: \(error)")
+            print("❌ Failed to fetch product: \(error)")
         }
     }
 
+    /// Checks current entitlements to determine ownership of the premium upgrade.
+    func updatePurchasedStatus() async {
+        for await result in Transaction.currentEntitlements {
+            guard case .verified(let transaction) = result else { continue }
+            if transaction.productID == productID {
+                isProUser = true
+                UserDefaults.standard.set(true, forKey: "isProUser")
+                return
+            }
+        }
+        isProUser = false
+        UserDefaults.standard.set(false, forKey: "isProUser")
+    }
+
+    /// Initiates the purchase flow for the premium upgrade.
+    func purchase() async {
+        guard let product else { return }
+        do {
+            let result = try await product.purchase()
+            switch result {
+            case .success(let verification):
+                if case .verified(let transaction) = verification {
+                    isProUser = true
+                    UserDefaults.standard.set(true, forKey: "isProUser")
+                    await transaction.finish()
+                }
+            default:
+                break
+            }
+        } catch {
+            print("❌ Purchase failed: \(error)")
+        }
+    }
+
+    /// Restores previously completed purchases.
     func restore() async {
         do {
             try await AppStore.sync()
-            await updateSubscriptionStatus()
+            await updatePurchasedStatus()
         } catch {
             print("❌ Error restoring purchases: \(error)")
         }

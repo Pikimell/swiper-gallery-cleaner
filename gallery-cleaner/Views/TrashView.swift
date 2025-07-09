@@ -7,7 +7,6 @@ struct TrashView: View {
     @EnvironmentObject var storeKit: StoreKitManager
 
     @StateObject private var adManager = InterstitialAdManager(adUnitID: "ca-app-pub-3940256099942544/4411468910")
-    @State private var showAd = false
     @State private var shouldDelete = false
 
     let columns = [
@@ -42,8 +41,12 @@ struct TrashView: View {
                         if let rootVC = UIApplication.shared.connectedScenes
                             .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController })
                             .first {
-                            adManager.showAd(from: rootVC)
-                            shouldDelete = true
+                            if storeKit.isProUser {
+                                trashManager.deleteAllFromLibrary(viewModel: viewModel)
+                            } else {
+                                adManager.showAd(from: rootVC)
+                                shouldDelete = true
+                            }
                         }
                     } label: {
                         Text("trash_delete_all".localized)

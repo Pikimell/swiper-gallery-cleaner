@@ -14,6 +14,7 @@ final class RewardedAdManager: NSObject, FullScreenContentDelegate, ObservableOb
 
     // Завантаження реклами
     func loadAd() {
+        guard !UserDefaults.standard.bool(forKey: "isProUser") else { return }
         let request = Request()
         RewardedAd.load(with: adUnitID, request: request) { [weak self] ad, error in
             if let error = error {
@@ -27,6 +28,7 @@ final class RewardedAdManager: NSObject, FullScreenContentDelegate, ObservableOb
 
     // Показ винагороджувальної реклами
     func showAd(from rootViewController: UIViewController, rewardHandler: @escaping () -> Void) {
+        guard !UserDefaults.standard.bool(forKey: "isProUser") else { return }
         guard let ad = rewardedAd else {
             print("⚠️ Rewarded ad is not ready yet.")
             loadAd()
