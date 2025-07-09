@@ -11,7 +11,7 @@
 "home_access_danied" = "Access to photos is denied. Please allow access in settings.";
 "home_load_photos" = "Loading photos...";
 "gallery_access_danied" = "Access to photos is denied.\nPlease allow access in settings.";
-"trash_delete_all" = "Видалити все";
+"trash_delete_all" = "Delete all";
 
 "app_title_first" = "Gallery";
 "app_title_second" = "Cleaner";
