@@ -29,8 +29,9 @@ struct SettingsView: View {
                 LanguageSectionView(selectedLanguage: $selectedLanguage)
                 //AnimationSectionView()
                 //StorageSectionView()
-                SubscriptionSectionView()
+//                SubscriptionSectionView()
                 FeedbackSectionView()
+                FAQSectionView()
                 PolicySectionView()
                 //AboutAppSectionView()
                 

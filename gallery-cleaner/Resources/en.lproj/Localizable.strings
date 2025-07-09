@@ -52,3 +52,39 @@
 "settings_app_author" = "Developer";
 "settings_app_website" = "Visit Website";
 
+
+"duplicates_title" = "Smart Cleaner";
+"scan_title" = "Find Duplicates";
+"scan_picker_label" = "Search Mode";
+"scan_start" = "Start Scan";
+"scan_in_progress" = "Scanning photos…";
+"scan_move_to_trash" = "Move %d to Trash";
+
+"scan_mode_exact" = "Duplicates";
+"scan_mode_pixel" = "Similar";
+"scan_mode_vision" = "Smart Match";
+
+
+
+"settings_faq_header" = "Help & FAQ";
+
+"faq_q_0" = "What is Gallery Cleaner?";
+"faq_a_0" = "Gallery Cleaner is an intelligent photo cleaning app that helps you identify and remove unnecessary photos from your gallery, such as duplicates, screenshots, blurry images, or memes.";
+
+"faq_q_1" = "How does the app detect unnecessary photos?";
+"faq_a_1" = "The app analyzes metadata and visual content of your photos using machine learning techniques and categorizes them into potential trash types like duplicates, low-quality images, or screenshots.";
+
+"faq_q_2" = "What happens when I delete photos from the Trash?";
+"faq_a_2" = "Photos deleted from the Trash are permanently removed from your device's photo library. Make sure to review them before confirming deletion.";
+
+"faq_q_3" = "How can I recover photos from the Trash?";
+"faq_a_3" = "Simply tap on a photo in the Trash screen to restore it back to your main library.";
+
+"faq_q_4" = "Does the app upload my photos to the cloud?";
+"faq_a_4" = "No. Gallery Cleaner works locally on your device and does not upload any photos to the cloud or external servers.";
+
+"faq_q_5" = "What are the benefits of the Premium version?";
+"faq_a_5" = "By purchasing the Premium version, you remove all advertisements and gain access to unlimited cleaning actions without interruptions.";
+
+"faq_q_6" = "How do I restore my purchase on a new device?";
+"faq_a_6" = "In the Settings screen, tap 'Restore Purchases' to reinstate your Premium access if you've previously bought it using the same Apple ID.";

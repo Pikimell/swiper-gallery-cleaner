@@ -29,17 +29,25 @@ struct MainTabView: View {
                 }
                 .tag(1)
 
+            DuplicateScanView(selectedTab: $selectedTab)
+                .tabItem {
+                    Label("duplicates_title".localized, systemImage: "rectangle.stack.badge.minus")
+                }
+                .tag(2)
+            
             TrashView()
                 .tabItem {
                     Label("trash_title".localized, systemImage: "trash")
                 }
-                .tag(2)
+                .tag(3)
+
+            
 
             SettingsView()
                 .tabItem {
                     Label("settings_title".localized, systemImage: "gearshape")
                 }
-                .tag(3)
+                .tag(4)
         }
         .applyTheme()
     }

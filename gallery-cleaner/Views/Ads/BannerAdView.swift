@@ -14,7 +14,7 @@ struct BannerAdView: View {
 
     var body: some View {
         Group {
-            if !storeKit.isProUser {
+            if false {
                 BannerAdViewRepresentable(adUnitID: adUnitID)
                     .frame(height: 50)
             }

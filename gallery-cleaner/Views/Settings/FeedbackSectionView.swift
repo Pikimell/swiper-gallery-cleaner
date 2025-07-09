@@ -7,7 +7,7 @@ struct FeedbackSectionView: View {
     var body: some View {
         Section(header: Text("settings_feedback_header".localized)) {
             Button(action: {
-                if let url = URL(string: "mailto:support@example.com?subject=GalleryCleaner Feedback") {
+                if let url = URL(string: "mailto:support@devtrail-it.com?subject=GalleryCleaner Feedback") {
                     openURL(url)
                 }
             }) {
@@ -16,20 +16,11 @@ struct FeedbackSectionView: View {
             }
 
             Button(action: {
-                if let url = URL(string: "https://example.com/report-issue") {
+                if let url = URL(string: "https://github.com/Pikimell/swiper-gallery-cleaner/issues/new") {
                     openURL(url)
                 }
             }) {
                 Label("settings_report_problem".localized, systemImage: "exclamationmark.bubble")
-                    .foregroundColor(theme.textPrimary)
-            }
-
-            Button(action: {
-                if let url = URL(string: "https://example.com/help") {
-                    openURL(url)
-                }
-            }) {
-                Label("settings_help_faq".localized, systemImage: "questionmark.circle")
                     .foregroundColor(theme.textPrimary)
             }
         }

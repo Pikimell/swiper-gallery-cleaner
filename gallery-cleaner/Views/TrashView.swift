@@ -26,28 +26,33 @@ struct TrashView: View {
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 10) {
                             ForEach(trashManager.trashedPhotos, id: \.id) { photo in
-                                PhotoThumbnailView(photo: photo,
-                                                   width: UIScreen.main.bounds.width / 3 - 16,
-                                                   height: UIScreen.main.bounds.width / 3 - 16)
-                                    .onTapGesture {
-                                        trashManager.restorePhoto(photo)
-                                    }
+                                PhotoThumbnailView(
+                                    photo: photo,
+                                    width: UIScreen.main.bounds.width / 3 - 16,
+                                    height: UIScreen.main.bounds.width / 3 - 16
+                                )
+                                .onTapGesture {
+                                    trashManager.restorePhoto(photo)
+                                }
                             }
                         }
                         .padding()
                     }
 
                     Button(role: .destructive) {
-                        if let rootVC = UIApplication.shared.connectedScenes
-                            .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController })
-                            .first {
-                            if storeKit.isProUser {
-                                trashManager.deleteAllFromLibrary(viewModel: viewModel)
-                            } else {
-                                adManager.showAd(from: rootVC)
-                                shouldDelete = true
-                            }
-                        }
+                        trashManager.deleteAllFromLibrary(viewModel: viewModel)
+//                        if storeKit.isProUser {
+//                            // Pro користувач — одразу видаляємо
+//                            trashManager.deleteAllFromLibrary(viewModel: viewModel)
+//                        } else {
+//                            // Без Pro — показуємо рекламу, після чого видаляємо
+//                            if let rootVC = UIApplication.shared.connectedScenes
+//                                .compactMap({ ($0 as? UIWindowScene)?.windows.first?.rootViewController })
+//                                .first {
+//                                adManager.showAd(from: rootVC)
+//                                shouldDelete = true
+//                            }
+//                        }
                     } label: {
                         Text("trash_delete_all".localized)
                             .font(.headline)

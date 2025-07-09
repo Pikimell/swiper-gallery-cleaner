@@ -79,7 +79,7 @@ struct GalleryView: View {
     private var trashButton: some View {
         if allPhotos.contains(where: { trashManager.trashedPhotos.contains($0) }) {
             Button(action: {
-                selectedTab = 2 // індекс вкладки TrashView
+                selectedTab = 3 // індекс вкладки TrashView
             }) {
                 Text("go_to_trash".localized(with: trashManager.trashedPhotos.count))
                     .font(.headline)

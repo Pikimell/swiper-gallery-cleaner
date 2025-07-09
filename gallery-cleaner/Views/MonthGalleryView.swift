@@ -104,7 +104,7 @@ struct MonthGalleryView: View {
                         Spacer()
                         if !trashManager.trashedPhotos.isEmpty {
                             Button(action: {
-                                selectedTab = 2 // <- перехід на вкладку TrashView
+                                selectedTab = 3 // <- перехід на вкладку TrashView
                             }) {
                                 Text("go_to_trash".localized(with: trashManager.trashedPhotos.count))
                                     .font(.headline)
