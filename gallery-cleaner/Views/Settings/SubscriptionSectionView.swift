@@ -7,9 +7,11 @@ enum SubscriptionStatus: String {
 struct SubscriptionSectionView: View {
     @AppStorage("subscriptionStatus") private var subscriptionStatusRaw: String = "free"
     @Environment(\.theme) private var theme
+    @EnvironmentObject var storeKit: StoreKitManager
+    @State private var showSuccess = false
 
     private var subscriptionStatus: SubscriptionStatus {
-        SubscriptionStatus(rawValue: subscriptionStatusRaw) ?? .free
+        storeKit.isProUser ? .pro : .free
     }
 
     var body: some View {
@@ -24,7 +26,10 @@ struct SubscriptionSectionView: View {
 
             if subscriptionStatus == .free {
                 Button(action: {
-                    // Запуск покупки Pro
+                    Task {
+                        await storeKit.purchase()
+                        if storeKit.isProUser { showSuccess = true }
+                    }
                 }) {
                     Label("settings_upgrade_pro".localized, systemImage: "star.fill")
                         .foregroundColor(theme.accent)
@@ -32,11 +37,17 @@ struct SubscriptionSectionView: View {
             }
 
             Button(action: {
-                // Відновлення покупок (Restore Purchases)
+                Task { await storeKit.restore() }
             }) {
                 Label("settings_restore_purchases".localized, systemImage: "arrow.clockwise")
                     .foregroundColor(theme.textPrimary)
             }
+        }
+        .alert("Purchase successful", isPresented: $showSuccess) {
+            Button("OK", role: .cancel) {}
+        }
+        .onChange(of: storeKit.isProUser) { newValue in
+            subscriptionStatusRaw = newValue ? "pro" : "free"
         }
     }
 }

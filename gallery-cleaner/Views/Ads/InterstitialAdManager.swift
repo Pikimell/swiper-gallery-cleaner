@@ -14,6 +14,7 @@ final class InterstitialAdManager: NSObject, FullScreenContentDelegate, Observab
     }
 
     func loadAd() {
+        guard !UserDefaults.standard.bool(forKey: "isProUser") else { return }
         let request = Request()
         InterstitialAd.load(with: adUnitID, request: request, completionHandler: { [weak self] ad, error in
             if let error = error {
@@ -26,6 +27,7 @@ final class InterstitialAdManager: NSObject, FullScreenContentDelegate, Observab
     }
 
     func showAd(from rootViewController: UIViewController) {
+        guard !UserDefaults.standard.bool(forKey: "isProUser") else { return }
         guard let ad = interstitial else {
             print("⚠️ Interstitial ad is not ready yet.")
             loadAd()
